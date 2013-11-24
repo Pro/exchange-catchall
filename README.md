@@ -34,10 +34,10 @@ Exchange 2007 SP3 .dll is build and can be found in the release directory. Pleas
 ## Installing the Receive Agent
 
 1. Copy all the files from the folder matching your Exchange Server version from the [release directory](CatchAllAgent/bin) into a directory on the server, where Exchange runs.
-Eg. into `C:\Program Files\Exchange CatchAll\`. Also copy the `Exchange.CatchAll.dll.config` to the same directory. The final structure should be:
+Eg. into `C:\Program Files\Exchange CatchAll\`. Also copy the `ExchangeCatchAll.dll.config` to the same directory. The final structure should be:
 <pre>
-C:\Program Files\Exchange CatchAll\Exchange.CatchAll.dll
-C:\Program Files\Exchange CatchAll\Exchange.CatchAll.dll.config
+C:\Program Files\Exchange CatchAll\ExchangeCatchAll.dll
+C:\Program Files\Exchange CatchAll\ExchangeCatchAll.dll.config
 </pre>
 
 2. Create the registry key for EventLog by executing the script: [Create Key.reg](Utils/Create key.reg?raw=true)
@@ -52,7 +52,7 @@ C:\Program Files\Exchange CatchAll\Exchange.CatchAll.dll.config
 
 5. Then open Exchange Management Shell
 <pre>
-	Install-TransportAgent -Name "Exchange CatchAll" -TransportAgentFactory "Exchange.CatchAll.CatchAllFactory" -AssemblyPath "C:\Program Files\Exchange CatchAll\Exchange.CatchAll.dll"
+	Install-TransportAgent -Name "Exchange CatchAll" -TransportAgentFactory "ExchangeCatchAll.CatchAllFactory" -AssemblyPath "C:\Program Files\Exchange CatchAll\ExchangeCatchAll.dll"
 	 
 	Enable-TransportAgent -Identity "Exchange CatchAll"
 	Restart-Service MSExchangeTransport
