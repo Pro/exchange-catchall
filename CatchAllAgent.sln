@@ -1,22 +1,26 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatchAllAgent", "CatchAllAgent\CatchAllAgent.csproj", "{02B4C666-7992-4BFC-94AF-DF18C1D3ED16}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exchange.CatchAll", "CatchAllAgent\Exchange.CatchAll.csproj", "{02B4C666-7992-4BFC-94AF-DF18C1D3ED16}"
 EndProject
 Global
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug Ex2010 SP3|Any CPU = Debug Ex2010 SP3|Any CPU
+		Release Ex2007 SP3|Any CPU = Release Ex2007 SP3|Any CPU
+		Release Ex2010 SP3|Any CPU = Release Ex2010 SP3|Any CPU
+		Release Ex2010|Any CPU = Release Ex2010|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{02B4C666-7992-4BFC-94AF-DF18C1D3ED16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02B4C666-7992-4BFC-94AF-DF18C1D3ED16}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02B4C666-7992-4BFC-94AF-DF18C1D3ED16}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02B4C666-7992-4BFC-94AF-DF18C1D3ED16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02B4C666-7992-4BFC-94AF-DF18C1D3ED16}.Debug Ex2010 SP3|Any CPU.ActiveCfg = Debug Ex2010 SP3|Any CPU
+		{02B4C666-7992-4BFC-94AF-DF18C1D3ED16}.Debug Ex2010 SP3|Any CPU.Build.0 = Debug Ex2010 SP3|Any CPU
+		{02B4C666-7992-4BFC-94AF-DF18C1D3ED16}.Release Ex2007 SP3|Any CPU.ActiveCfg = Release Ex2007 SP3|Any CPU
+		{02B4C666-7992-4BFC-94AF-DF18C1D3ED16}.Release Ex2007 SP3|Any CPU.Build.0 = Release Ex2007 SP3|Any CPU
+		{02B4C666-7992-4BFC-94AF-DF18C1D3ED16}.Release Ex2010 SP3|Any CPU.ActiveCfg = Release Ex2010 SP3|Any CPU
+		{02B4C666-7992-4BFC-94AF-DF18C1D3ED16}.Release Ex2010 SP3|Any CPU.Build.0 = Release Ex2010 SP3|Any CPU
+		{02B4C666-7992-4BFC-94AF-DF18C1D3ED16}.Release Ex2010|Any CPU.ActiveCfg = Release Ex2010|Any CPU
+		{02B4C666-7992-4BFC-94AF-DF18C1D3ED16}.Release Ex2010|Any CPU.Build.0 = Release Ex2010|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
