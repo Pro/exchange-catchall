@@ -47,7 +47,7 @@ namespace ConfigurationSettings
             }
         }
 
-        [ConfigurationProperty("port", DefaultValue = 3000, IsKey = false, IsRequired = false)]
+        [ConfigurationProperty("port", DefaultValue = 3306, IsKey = false, IsRequired = false)]
         [IntegerValidator(ExcludeRange = false, MaxValue = 65535, MinValue = 1)]
         public int Port
         {
@@ -61,16 +61,16 @@ namespace ConfigurationSettings
             }
         }
 
-        [ConfigurationProperty("schema", DefaultValue = "", IsKey = false, IsRequired = false)]
+        [ConfigurationProperty("database", DefaultValue = "", IsKey = false, IsRequired = false)]
         public string Schema
         {
             get
             {
-                return (string)this["schema"];
+                return (string)this["database"];
             }
             set
             {
-                this["schema"] = value;
+                this["database"] = value;
             }
         }
 

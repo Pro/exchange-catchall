@@ -77,7 +77,7 @@ The `databaseSection` defines the settings for MySQL logging and blocked check. 
     </Domains>
   </domainSection>
   <databaseSection>
-    <database enabled="true" type="mysql" host="localhost" port="3000" schema="catchall" user="catchall" password="catchall" />
+    <database enabled="true" type="mysql" host="localhost" port="3306" database="catchall" user="catchall" password="catchall" />
   </databaseSection>
 ```
 
