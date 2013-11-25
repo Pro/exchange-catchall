@@ -35,5 +35,20 @@ namespace ConfigurationSettings
             }
         }
 
+
+        [ConfigurationProperty("RejectIfBlocked", DefaultValue = false, IsKey = false, IsRequired = true)]
+        public bool RejectIfBlocked
+        {
+            get
+            {
+                return (bool)this["RejectIfBlocked"];
+            }
+            set
+            {
+                this["RejectIfBlocked"] = value;
+            }
+        }
+
+
     }
 }

@@ -44,6 +44,11 @@ Exchange 2007 SP3 .dll is build and can be found in the release directory. Pleas
 9. Check EventLog for errors or warnings.
  Hint: you can create a user defined view in EventLog and then select "Per Source" and as the value "Exchange CatchAll"
 
+Make sure that the priority of the CatchAll Agent is quite high (best is to set it directly after any Antivirus system).
+To get a list of all the Export Agents use the Command `Get-TransportAgent`
+
+To change the priority use `Set-TransportAgent -Identity "Exchange CatchAll" -Priority 3`
+ 
 ### Configuring the agent
 Edit the .config file to fit your needs.
 
@@ -53,7 +58,7 @@ The destination address must be handled by the local exchange server and cannot 
 The `customSection` defines different application settings:
 
 * `database`: the settings for MySQL logging and blocked check. If you don't need it, set `enabled` to false. Currently only `mysql` is supported but feel free to create a pull request for other databases.
-* `general`: Set LogLevel (See Logging section below). Enable/Disable 'X-OrigTo' header by setting `AddOrigToHeader` accordingly.
+* `general`: Set LogLevel (See Logging section below). Enable/Disable 'X-OrigTo' header by setting `AddOrigToHeader` accordingly. `RejectIfBlocked` defines, if a blocked E-Mail address in MySQL causes a '550 5.1.1 Recipient rejected' response.
 
 ```xml
     <domainSection>
@@ -63,7 +68,7 @@ The `customSection` defines different application settings:
       </Domains>
     </domainSection>
     <customSection>
-      <general LogLevel="3" AddOrigToHeader="true" />
+      <general LogLevel="3" AddOrigToHeader="true" RejectIfBlocked="false" />
       <database enabled="true" type="mysql" host="localhost" port="3306" database="catchall" user="catchall" password="catchall" />
     </customSection>
 ```

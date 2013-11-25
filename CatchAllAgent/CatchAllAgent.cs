@@ -80,6 +80,7 @@ namespace Exchange.CatchAll
         /// </summary>
         private Dictionary<string, RoutingAddress> addressMap;
 
+        private Dictionary<int, string[]> origToMapping;
 
         /// <summary>
         /// The database connector for logging and blocked check
@@ -96,7 +97,7 @@ namespace Exchange.CatchAll
             // Save the address book and configuration
             this.addressBook = addressBook;
 
-
+            this.origToMapping = new Dictionary<int, string[]>();
 
             DomainSection domains = CatchAllFactory.GetCustomConfig<DomainSection>("domainSection");
             if (domains == null)
@@ -142,44 +143,28 @@ namespace Exchange.CatchAll
             ReceiveMessageEventSource source,
             EndOfDataEventArgs e)
         {
-            foreach (EnvelopeRecipient recipient in e.MailItem.Recipients)
+            string[] addrs;
+            if (this.origToMapping.TryGetValue(e.MailItem.GetHashCode(), out addrs))
             {
-                // Check whether to handle the recipient's domain
+                this.origToMapping.Remove(e.MailItem.GetHashCode());
+                this.databaseConnector.LogCatch(addrs[0], addrs[1], e.MailItem.Message.Subject, e.MailItem.Message.MessageId);
 
-                RoutingAddress catchAllAddress;
-                if (this.addressMap.TryGetValue(
-                    recipient.Address.DomainPart.ToLower(),
-                    out catchAllAddress))
+                //Add / update orig to header
+                if (CatchAllFactory.AppSettings.AddOrigToHeader)
                 {
-
-                    // Rewrite the (envelope) recipient address if 'not found'
-                    if ((this.addressBook != null) &&
-                        (this.addressBook.Find(recipient.Address) == null)){
-                        
-
-                            this.databaseConnector.LogCatch(recipient.Address.ToString(), catchAllAddress.ToString(), e.MailItem.Message.Subject, e.MailItem.Message.MessageId);
-
-                            //Add / update orig to header
-                            if (CatchAllFactory.AppSettings.AddOrigToHeader)
-                            {
-                                MimeDocument mdMimeDoc = e.MailItem.Message.MimeDocument;
-                                HeaderList hlHeaderlist = mdMimeDoc.RootPart.Headers;
-                                Header origToHeader = hlHeaderlist.FindFirst("X-OrigTo");
-                                if (origToHeader == null)
-                                {
-                                    MimeNode lhLasterHeader = hlHeaderlist.LastChild;
-                                    TextHeader nhNewHeader = new TextHeader("X-OrigTo", recipient.Address.ToString());
-                                    hlHeaderlist.InsertBefore(nhNewHeader, lhLasterHeader);
-                                }
-                                else
-                                {
-                                    origToHeader.Value += ", " + recipient.Address.ToString();
-                                } 
-                            }
-
-
-                            recipient.Address = catchAllAddress;
+                    MimeDocument mdMimeDoc = e.MailItem.Message.MimeDocument;
+                    HeaderList hlHeaderlist = mdMimeDoc.RootPart.Headers;
+                    Header origToHeader = hlHeaderlist.FindFirst("X-OrigTo");
+                    if (origToHeader == null)
+                    {
+                        MimeNode lhLasterHeader = hlHeaderlist.LastChild;
+                        TextHeader nhNewHeader = new TextHeader("X-OrigTo", addrs[0]);
+                        hlHeaderlist.InsertBefore(nhNewHeader, lhLasterHeader);
                     }
+                    else
+                    {
+                        origToHeader.Value += ", " + addrs[0];
+                    } 
                 }
             }
 
@@ -200,18 +185,30 @@ namespace Exchange.CatchAll
                 out catchAllAddress))
             {
                 // Check if address assigned to user. If not, check if blocked.
-                if (this.addressBook != null && this.addressBook.Find(rcptArgs.RecipientAddress) == null && this.databaseConnector.isBlocked(rcptArgs.RecipientAddress.ToString().ToLower()))
-                {
-                    // reject email, because address is blocked
+                if (this.addressBook != null && this.addressBook.Find(rcptArgs.RecipientAddress) == null) {
+                    if (!this.databaseConnector.isBlocked(rcptArgs.RecipientAddress.ToString().ToLower()))
+                    {
+                        Logger.LogInformation("Cought: " + rcptArgs.RecipientAddress.ToString().ToLower());
+                        string[] addrs = new string[] { rcptArgs.RecipientAddress.ToString().ToLower(), catchAllAddress.ToString().ToLower() };
+                        origToMapping.Add(rcptArgs.MailItem.GetHashCode(), addrs);
+                        rcptArgs.RecipientAddress = catchAllAddress;
+                    }
+                    else
+                    {
+                        // reject email, because address is blocked
 
-                    Logger.LogInformation("Recipient blocked: " + rcptArgs.RecipientAddress.ToString().ToLower());
-                    source.RejectCommand(CatchAllAgent.rejectResponse);
-                }                
+                        Logger.LogInformation("Recipient blocked: " + rcptArgs.RecipientAddress.ToString().ToLower());
+
+                        if (CatchAllFactory.AppSettings.RejectIfBlocked)
+                            source.RejectCommand(CatchAllAgent.rejectResponse);              
+                       
+                    } 
+                }
             }
 
             return;
         }
     }
-
+    
     
 }

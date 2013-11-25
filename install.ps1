@@ -36,12 +36,13 @@ if (Test-Path "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\Application\Exch
 
 
 net stop MSExchangeTransport 
+net stop W3SVC 
  
 write-host "Creating install directory: '$EXDIR' and copying data from '$SRCDIR'"  -f "green"
 new-item -Type Directory -path $EXDIR -ErrorAction SilentlyContinue 
 
 copy-item "$SRCDIR\ExchangeCatchAll.dll" $EXDIR -force 
-copy-item "$SRCDIR\ExchangeCatchAll.dll.config" $EXDIR -force 
+copy-item "$SRCDIR\ExchangeCatchAll.dll.config" $EXDIR -confirm 
 copy-item "$SRCDIR\mysql.data.dll" $EXDIR -force 
 
 push-location
@@ -58,6 +59,7 @@ enable-transportagent -Identity "Exchange CatchAll"
 get-transportagent 
  
 write-host "Starting Edge Transport" -f "green" 
+net start W3SVC 
 net start MSExchangeTransport 
  
 write-host "Installation complete. Check previous outputs for any errors!" -f "yellow" 

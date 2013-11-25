@@ -3,6 +3,7 @@ write-host " *** Exchange CatchAll UNINSTALL Script ***" -f "blue"
 $EXDIR="C:\Program Files\Exchange CatchAll" 
  
 Net Stop MSExchangeTransport 
+Net Stop W3SVC 
  
 write-host "Disabling agent..."  -f "green"
 Disable-TransportAgent -Identity "Exchange CatchAll" 
@@ -23,6 +24,7 @@ if (Test-Path "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\Application\Exch
 
 
 write-host "Starting Transport..."  -f "green"
+Net Start W3SVC 
 Net Start MSExchangeTransport 
  
 write-host "Uninstallation complete. Check previous outputs for any errors!"  -f "yellow"
