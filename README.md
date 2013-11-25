@@ -33,7 +33,7 @@ Exchange 2007 SP3 .dll is build and can be found in the release directory. Pleas
 
 ## Installing the Receive Agent
 
-1. Download the .zip and extract it e.g. on the Desktop: [Exchange CatchAll Master.zip](https://github.com/Pro/archive/master.zip)
+1. Download the .zip and extract it e.g. on the Desktop: [Exchange CatchAll Master.zip](https://github.com/Pro/exchange-catchall/archive/master.zip)
 2. If you want to use MySQL, then install MySQL Server and execute the commands from `database.sql` to create the corresponding tables (modify the commands if needed). Don't forget to grant permissions to the user.
 3. Open "Exchange Management Shell" from the Startmenu
 4. Execute the following command to allow execution of local scripts (will be reset at last step): `Set-ExecutionPolicy Unrestricted`
