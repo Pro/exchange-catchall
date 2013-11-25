@@ -25,7 +25,7 @@ See http://technet.microsoft.com/en-us/library/jj591524%28v=exchg.150%29.aspx fo
 
 This Receive Agent is fully tested under Exchange 2010 SP3 with Windows Server 2008 R2.
 
-There's also a version for Exchange 2010 without any Service Packs installed.
+There's are also compiled versions for no Service Pack, SP1 and SP2 installed.
 
 ### Exchange 2007
 
@@ -33,7 +33,7 @@ Exchange 2007 SP3 .dll is build and can be found in the release directory. Pleas
 
 ## Installing the Receive Agent
 
-1. Download the .zip and extract it e.g. on the Desktop: [Exchange CatchAll Master.zip](/archive/master.zip)
+1. Download the .zip and extract it e.g. on the Desktop: [Exchange CatchAll Master.zip](https://github.com/Pro/archive/master.zip)
 2. If you want to use MySQL, then install MySQL Server and execute the commands from `database.sql` to create the corresponding tables (modify the commands if needed). Don't forget to grant permissions to the user.
 3. Open "Exchange Management Shell" from the Startmenu
 4. Execute the following command to allow execution of local scripts (will be reset at last step): `Set-ExecutionPolicy Unrestricted`
