@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
-using Exchange.CatchAll.Properties;
 
 namespace Exchange.CatchAll
 {
@@ -14,19 +13,19 @@ namespace Exchange.CatchAll
 
         public static void LogInformation(string message, int id = 0)
         {
-            if (Settings.Default.LogLevel >= 3)
+            if (CatchAllFactory.AppSettings.LogLevel >= 3)
                 LogEntry(message, id, EventLogEntryType.Information);
         }
 
         public static void LogWarning(string message, int id = 0)
         {
-            if (Settings.Default.LogLevel >= 2)
+            if (CatchAllFactory.AppSettings.LogLevel >= 2)
                 LogEntry(message, id, EventLogEntryType.Warning);
         }
 
         public static void LogError(string message, int id = 0)
         {
-            if (Settings.Default.LogLevel >= 1)
+            if (CatchAllFactory.AppSettings.LogLevel >= 1)
                 LogEntry(message, id, EventLogEntryType.Error);
         }
 

@@ -61,7 +61,6 @@ namespace Exchange.CatchAll
     using Microsoft.Exchange.Data.Mime;
     using ConfigurationSettings;
     using System.Configuration;
-    using Exchange.CatchAll.Properties;
 
 
     /// <summary>
@@ -73,6 +72,8 @@ namespace Exchange.CatchAll
         /// The address book to be used for lookups.
         /// </summary>
         private AddressBook addressBook;
+
+        private static SmtpResponse rejectResponse = new SmtpResponse("550", "5.1.1", "Recipient rejected");
 
         /// <summary>
         /// The (domain to) catchall address map
@@ -95,7 +96,9 @@ namespace Exchange.CatchAll
             // Save the address book and configuration
             this.addressBook = addressBook;
 
-            DomainSection domains = (DomainSection)ConfigurationManager.GetSection("domainSection");
+
+
+            DomainSection domains = CatchAllFactory.GetCustomConfig<DomainSection>("domainSection");
             if (domains == null)
             {
                 Logger.LogError("domainSection not found in configuration.");
@@ -117,7 +120,6 @@ namespace Exchange.CatchAll
                     {
                         Logger.LogError("Invalid address for domain: " + d.Name + ". '" + d.Address);
                         continue;
-                        break;
                     }
                     addressMap.Add(d.Name.ToLower(), new RoutingAddress(d.Address));
 
@@ -130,11 +132,57 @@ namespace Exchange.CatchAll
 
             databaseConnector = new DatabaseConnector();
 
+            
+            this.OnEndOfData += new EndOfDataEventHandler(this.OnEndOfDataHandler);
 
-            // Register an OnRcptCommand event handler
             this.OnRcptCommand += new RcptCommandEventHandler(this.RcptToHandler);
-            if (Settings.Default.AddOrigToHeader)
-                this.OnEndOfHeaders += new EndOfHeadersEventHandler(this.EndOfHeadersHandler);
+        }
+
+        private void OnEndOfDataHandler(
+            ReceiveMessageEventSource source,
+            EndOfDataEventArgs e)
+        {
+            foreach (EnvelopeRecipient recipient in e.MailItem.Recipients)
+            {
+                // Check whether to handle the recipient's domain
+
+                RoutingAddress catchAllAddress;
+                if (this.addressMap.TryGetValue(
+                    recipient.Address.DomainPart.ToLower(),
+                    out catchAllAddress))
+                {
+
+                    // Rewrite the (envelope) recipient address if 'not found'
+                    if ((this.addressBook != null) &&
+                        (this.addressBook.Find(recipient.Address) == null)){
+                        
+
+                            this.databaseConnector.LogCatch(recipient.Address.ToString(), catchAllAddress.ToString(), e.MailItem.Message.Subject, e.MailItem.Message.MessageId);
+
+                            //Add / update orig to header
+                            if (CatchAllFactory.AppSettings.AddOrigToHeader)
+                            {
+                                MimeDocument mdMimeDoc = e.MailItem.Message.MimeDocument;
+                                HeaderList hlHeaderlist = mdMimeDoc.RootPart.Headers;
+                                Header origToHeader = hlHeaderlist.FindFirst("X-OrigTo");
+                                if (origToHeader == null)
+                                {
+                                    MimeNode lhLasterHeader = hlHeaderlist.LastChild;
+                                    TextHeader nhNewHeader = new TextHeader("X-OrigTo", recipient.Address.ToString());
+                                    hlHeaderlist.InsertBefore(nhNewHeader, lhLasterHeader);
+                                }
+                                else
+                                {
+                                    origToHeader.Value += ", " + recipient.Address.ToString();
+                                } 
+                            }
+
+
+                            recipient.Address = catchAllAddress;
+                    }
+                }
+            }
+
         }
 
         /// <summary>
@@ -142,7 +190,7 @@ namespace Exchange.CatchAll
         /// </summary>
         /// <param name="source">The event source.</param>
         /// <param name="eodArgs">The event arguments.</param>
-        public void RcptToHandler(ReceiveEventSource source, RcptCommandEventArgs rcptArgs)
+        public void RcptToHandler(ReceiveCommandEventSource source, RcptCommandEventArgs rcptArgs)
         {
             RoutingAddress catchAllAddress;
 
@@ -151,42 +199,17 @@ namespace Exchange.CatchAll
                 rcptArgs.RecipientAddress.DomainPart.ToLower(),
                 out catchAllAddress))
             {
-                // Rewrite the (envelope) recipient address if 'not found'
-                if ((this.addressBook != null) &&
-                    (this.addressBook.Find(rcptArgs.RecipientAddress) == null) && !this.databaseConnector.isBlocked(rcptArgs.RecipientAddress.ToString().ToLower()))
+                // Check if address assigned to user. If not, check if blocked.
+                if (this.addressBook != null && this.addressBook.Find(rcptArgs.RecipientAddress) == null && this.databaseConnector.isBlocked(rcptArgs.RecipientAddress.ToString().ToLower()))
                 {
-                    Logger.LogInformation("Message Info: " + rcptArgs.MailItem.EnvelopeId + ", " + rcptArgs.MailItem.Message.MessageId);
-                    this.databaseConnector.LogCatch(rcptArgs.RecipientAddress.ToString(), catchAllAddress.ToString(), rcptArgs.MailItem.EnvelopeId, rcptArgs.SmtpSession.SessionId.ToString());
-                    rcptArgs.OriginalRecipient = "rfc822;" + rcptArgs.RecipientAddress.ToString();
-                    MimeDocument mdMimeDoc = rcptArgs.MailItem.Message.MimeDocument;
-                    HeaderList hlHeaderlist = mdMimeDoc.RootPart.Headers;
-                    Header mhProcHeader = hlHeaderlist.FindFirst("X-Original-Rcpt");
-                    if (mhProcHeader == null)
-                    {
-                        MimeNode lhLasterHeader = hlHeaderlist.LastChild;
-                        TextHeader nhNewHeader = new TextHeader("X-Original-Rcpt", rcptArgs.RecipientAddress.ToString());
-                        hlHeaderlist.InsertBefore(nhNewHeader, lhLasterHeader);
-                    }
-                    rcptArgs.RecipientAddress = catchAllAddress;
-                }
+                    // reject email, because address is blocked
+
+                    Logger.LogInformation("Recipient blocked: " + rcptArgs.RecipientAddress.ToString().ToLower());
+                    source.RejectCommand(CatchAllAgent.rejectResponse);
+                }                
             }
 
             return;
-        }
-
-        private void EndOfHeadersHandler(ReceiveMessageEventSource source, EndOfHeadersEventArgs e)
-        {
-            try
-            {
-                MimeNode lhLasterHeader = e.Headers.LastChild;
-                Logger.LogInformation("Message: " + e.MailItem.ToString() + " | " + e.Headers.FindFirst("To").Value + " | " + e.MailItem.Message.To);
-                TextHeader nhNewHeader = new TextHeader("X-OrigTo", e.Headers.FindFirst("To").Value);            
-                e.Headers.InsertAfter(nhNewHeader, lhLasterHeader);       
-            }
-            catch (Exception except)
-            {
-                Logger.LogError("EndofHeader Exception = " + except.Message);
-            }
         }
     }
 

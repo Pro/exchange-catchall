@@ -4,6 +4,8 @@ CREATE DATABASE `catchall` /*!40100 DEFAULT CHARACTER SET utf8 */$$
 
 delimiter $$
 
+use catchall$$
+
 CREATE TABLE `blocked` (
   `idblocked` int(11) NOT NULL AUTO_INCREMENT,
   `address` varchar(45) NOT NULL,
@@ -22,7 +24,6 @@ CREATE TABLE `cought` (
   `replaced` varchar(255) NOT NULL,
   `subject` varchar(255) DEFAULT NULL,
   `message_id` varchar(255) DEFAULT NULL,
-  `session_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idCought`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8$$
 

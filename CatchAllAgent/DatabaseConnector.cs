@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Exchange.CatchAll
@@ -15,7 +16,8 @@ namespace Exchange.CatchAll
 
         public DatabaseConnector()
         {
-            Database settings = (Database)ConfigurationManager.GetSection("databaseSection/database");
+
+            Database settings = CatchAllFactory.GetCustomConfig<Database>("customSection/database");
             if (settings == null)
             {
                 Logger.LogWarning("No database settings found. Not using database connection.");
@@ -24,7 +26,7 @@ namespace Exchange.CatchAll
 
             if (settings.Type.Equals("mysql", StringComparison.OrdinalIgnoreCase))
             {
-                string myConnectionString = "SERVER=" + settings.Host + ":" + settings.Port + ";" +
+                string myConnectionString = "SERVER=" + settings.Host + ";PORT=" + settings.Port + ";" +
                                                 "UID=" + settings.User + ";" +
                                                 "PWD=" + settings.Password + ";" +
                                                 "DATABASE=" + settings.Schema + ";";
@@ -44,7 +46,7 @@ namespace Exchange.CatchAll
             }            
         }
 
-        public void LogCatch(string original, string replaced, string message_id, string session_id)
+        public void LogCatch(string original, string replaced, string subject, string message_id)
         {
             if (sqlConnection == null)
                 return;
@@ -58,12 +60,12 @@ namespace Exchange.CatchAll
 
                 MySqlCommand myCommand = new MySqlCommand();
                 myCommand.Connection = sqlConnection;
-                myCommand.CommandText = "INSERT INTO Cought (date, original, replaced, message_id, session_id) " +
-                                    "Values(NOW(), ?original, ?replaced, ?message_id, ?session_id')";
+                myCommand.CommandText = "INSERT INTO Cought (date, original, replaced, message_id, subject) " +
+                                    "Values(NOW(), @original, @replaced, @message_id, @subject)";
                 myCommand.Parameters.AddWithValue("@original", original);
                 myCommand.Parameters.AddWithValue("@replaced", replaced);
+                myCommand.Parameters.AddWithValue("@subject", subject);
                 myCommand.Parameters.AddWithValue("@message_id", message_id);
-                myCommand.Parameters.AddWithValue("@session_id", session_id);
                 myCommand.ExecuteNonQuery();
                 sqlConnection.Close();
             }
@@ -84,7 +86,7 @@ namespace Exchange.CatchAll
 
                 sqlConnection.Open();
 
-                MySqlCommand myCommand = new MySqlCommand("update blocked set hits=hits+1 where address=?address");
+                MySqlCommand myCommand = new MySqlCommand("update blocked set hits=hits+1 where address=@address");
                 myCommand.Connection = sqlConnection;
                 myCommand.Parameters.AddWithValue("@address", address);
                 bool retVal = (myCommand.ExecuteNonQuery() > 0);

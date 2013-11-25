@@ -33,32 +33,15 @@ Exchange 2007 SP3 .dll is build and can be found in the release directory. Pleas
 
 ## Installing the Receive Agent
 
-1. Copy all the files from the folder matching your Exchange Server version from the [release directory](CatchAllAgent/bin) into a directory on the server, where Exchange runs.
-Eg. into `C:\Program Files\Exchange CatchAll\`. Also copy the `ExchangeCatchAll.dll.config` to the same directory. The final structure should be:
-<pre>
-C:\Program Files\Exchange CatchAll\ExchangeCatchAll.dll
-C:\Program Files\Exchange CatchAll\ExchangeCatchAll.dll.config
-</pre>
-
-2. Create the registry key for EventLog by executing the script: [Create Key.reg](Utils/Create key.reg?raw=true)
-
-4. Add `C:\Program Files\Exchange CatchAll\` to your PATH environment variable:
-
- Normal command prompt: `set "path=%path%;C:\Program Files\Exchange CatchAll"`
- 
- or in the Power shell: `setx PATH "$env:path;C:\Program Files\Exchange CatchAll" -m`
-
- (If you execute the following command in the same shell, you need to first restart the shell load the new environment variable)
-
-5. Then open Exchange Management Shell
-<pre>
-	Install-TransportAgent -Name "Exchange CatchAll" -TransportAgentFactory "ExchangeCatchAll.CatchAllFactory" -AssemblyPath "C:\Program Files\Exchange CatchAll\ExchangeCatchAll.dll"
-	 
-	Enable-TransportAgent -Identity "Exchange CatchAll"
-	Restart-Service MSExchangeTransport
-</pre>
-6. Close the Exchange Management Shell Window
-7. Check EventLog for errors or warnings.
+1. Download the .zip and extract it e.g. on the Desktop: [Exchange CatchAll Master.zip](/archive/master.zip)
+2. If you want to use MySQL, then install MySQL Server and execute the commands from `database.sql` to create the corresponding tables (modify the commands if needed). Don't forget to grant permissions to the user.
+3. Open "Exchange Management Shell" from the Startmenu
+4. Execute the following command to allow execution of local scripts (will be reset at last step): `Set-ExecutionPolicy Unrestricted`
+5. Cd into the folder where the zip has been extracted.
+6. Execute the install script `.\install.ps1`
+7. Follow the instructions. For the configuration see next section.
+8. Reset the execution policy: `Set-ExecutionPolicy Restricted`
+9. Check EventLog for errors or warnings.
  Hint: you can create a user defined view in EventLog and then select "Per Source" and as the value "Exchange CatchAll"
 
 ### Configuring the agent
@@ -67,18 +50,22 @@ Edit the .config file to fit your needs.
 The `domainSection` defines the CatchAll domains. The configuration below forwards all E-Mails to `*@example.com` to the address `you@example.com` and `*@foo.com` to `you@foo.org`.
 The destination address must be handled by the local exchange server and cannot be an external E-Mail address. Also make sure that you don't create a circular redirection (using the same domain for `name` and `address`).
 
-The `databaseSection` defines the settings for MySQL logging and blocked check. If you don't need it, set `enabled` to false. Currently only `mysql` is supported but feel free to create a pull request for other databases.
+The `customSection` defines different application settings:
+
+* `database`: the settings for MySQL logging and blocked check. If you don't need it, set `enabled` to false. Currently only `mysql` is supported but feel free to create a pull request for other databases.
+* `general`: Set LogLevel (See Logging section below). Enable/Disable 'X-OrigTo' header by setting `AddOrigToHeader` accordingly.
 
 ```xml
-  <domainSection>
-    <Domains>
-      <Domain name="example.com" address="you@example.org"/>
-      <Domain name="foo.com" address="you@foo.org" />
-    </Domains>
-  </domainSection>
-  <databaseSection>
-    <database enabled="true" type="mysql" host="localhost" port="3306" database="catchall" user="catchall" password="catchall" />
-  </databaseSection>
+    <domainSection>
+      <Domains>
+        <Domain name="example.com" address="you@example.org"/>
+        <Domain name="foo.com" address="you@foo.org" />
+      </Domains>
+    </domainSection>
+    <customSection>
+      <general LogLevel="3" AddOrigToHeader="true" />
+      <database enabled="true" type="mysql" host="localhost" port="3306" database="catchall" user="catchall" password="catchall" />
+    </customSection>
 ```
 
 
@@ -93,24 +80,19 @@ You can set the LogLevel in the .config file:
 ```
 
 Possible values:
-0 = no logging
-1 = Error only
-2 = Warn+Error
-3 = Info+Warn+Error
+* 0 = no logging
+* 1 = Error only
+* 2 = Warn+Error
+* 3 = Info+Warn+Error
 
 
 ## Updating the Transport Agent
 
-If you want to update the Exchange DKIM Transport Agent, you need to do the following:
+If you want to update the Exchange DKIM Transport Agent simply redownload the .zip file and follow the steps in the installation section.
 
-* Open Powershell and stop the services, which block the .dll
+## Uninstalling the Transport Agent
 
-        StopService MSExchangeTransport
-       
-* Then download [ExchangeCatchAll.dll](Src/ExchangeCatchAll/bin) and overwrite the existing .dll
-* Start the services again
-
-        StartService MSExchangeTransport
+Follow the install instructions but execute `.\uninstall.ps1` instead.
 
 ## Known bugs
 
@@ -133,6 +115,21 @@ Microsoft.Exchange.Data.Transport.xml
 </pre>
 into the corresponding subdirectory from the Lib directory of this project.
 
+#### Debugging
+If you want to debug the .dll on your Exchange Server, you need to install [Visual Studio Remote Debugging](msdn.microsoft.com/en-us/library/vstudio/bt727f1t.aspx) on the Server.
+
+1. After the Remote Debugging Tools are installed on the Server, open Visual Studio
+2. Compile the .dll with Debug information
+3. Copy the recompiled .dll to the server
+4. In Visual Studio select Debug->Attach to Process
+5. Under 'Qualifier' input the server IP oder Host Name
+6. Select "Show processes from all users"
+7. Select the process `EdgeTransport.exe` and then press 'Attach'
+8. When reached, the process should stop at the breakpoint
+
 ## Changelog
 
-* 25.11.2013: Added custom X-OrigTo header.
+* 25.11.2013:
+	- Added custom X-OrigTo header.
+	- Added install and uninstall script.
+	- Added build for all Exchange 2010 Versions with different SPs.
