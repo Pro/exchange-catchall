@@ -29,37 +29,39 @@ if ($version -eq 1) {
 
 write-host "Creating registry key for EventLog" -f "green"
 if (Test-Path "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\Application\Exchange CatchAll") {
-	write-host "Key already exists. Continuing..." -f "yellow"
+	write-host "Registry key for EventLog already exists. Continuing..." -f "yellow"
 } else {
 	New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\Application\Exchange CatchAll"
 }
 
 
 net stop MSExchangeTransport 
-net stop W3SVC 
  
 write-host "Creating install directory: '$EXDIR' and copying data from '$SRCDIR'"  -f "green"
 new-item -Type Directory -path $EXDIR -ErrorAction SilentlyContinue 
 
 copy-item "$SRCDIR\ExchangeCatchAll.dll" $EXDIR -force 
-copy-item "$SRCDIR\ExchangeCatchAll.dll.config" $EXDIR -confirm 
+if (Test-Path "$SRCDIR\ExchangeCatchAll.dll.config")
+{
+	$overwrite = read-host "Configuration already exists. Do you want to overwrite it? [Y/N]"
+	if ($overwrite -eq "Y") {
+		copy-item "$SRCDIR\ExchangeCatchAll.dll.config" $EXDIR -force
+	}
+} else {
+	copy-item "$SRCDIR\ExchangeCatchAll.dll.config" $EXDIR -force
+}
 copy-item "$SRCDIR\mysql.data.dll" $EXDIR -force 
-
-push-location
-cd $EXDIR
 
 read-host "Now open '$EXDIR\ExchangeCatchAll.dll.config' to configure Exchange CatchAll. When done and saved press 'Return'"
 
 write-host "Registering agent" -f "green"
 Install-TransportAgent -Name "Exchange CatchAll" -TransportAgentFactory "Exchange.CatchAll.CatchAllFactory" -AssemblyPath "$EXDIR\ExchangeCatchAll.dll"
-pop-location
 
 write-host "Enabling agent" -f "green" 
 enable-transportagent -Identity "Exchange CatchAll" 
 get-transportagent 
  
 write-host "Starting Edge Transport" -f "green" 
-net start W3SVC 
 net start MSExchangeTransport 
  
 write-host "Installation complete. Check previous outputs for any errors!" -f "yellow" 
