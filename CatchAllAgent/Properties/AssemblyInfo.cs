@@ -1,16 +1,17 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Resources;
 
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
-[assembly: AssemblyTitle("CatchAllAgent")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Exchange CatchAllAgent")]
+[assembly: AssemblyDescription("Provides CatchAll functionality to Exchange Server")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Stefan Profanter")]
-[assembly: AssemblyProduct("CatchAllAgent")]
-[assembly: AssemblyCopyright("Copyright Stefan Profanter 2013 ©")]
+[assembly: AssemblyCompany("github.com/Pro")]
+[assembly: AssemblyProduct("Exchange CatchAllAgent")]
+[assembly: AssemblyCopyright("Gnu GPL 3 by Stefan Profanter © 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +33,6 @@ using System.Runtime.InteropServices;
 // Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.5.0.0")]
-[assembly: AssemblyFileVersion("1.5.0.0")]
+[assembly: AssemblyVersion("1.5.*")]
+[assembly: AssemblyFileVersion("1.5")]
+[assembly: NeutralResourcesLanguageAttribute("en-US")]
