@@ -134,7 +134,7 @@ If you want to debug the .dll on your Exchange Server, you need to install [Visu
 
 ## Changelog
 
-* 25.11.2013:
+* 25.11.2013 [1.5.0.0]:
 	- Added custom X-OrigTo header.
 	- Added install and uninstall script.
 	- Added build for all Exchange 2010 Versions with different SPs.
