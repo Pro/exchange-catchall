@@ -13,9 +13,9 @@ Using MySQL (not required for basic functionality) you get additional features:
 
 ## Supported versions
 
-The .dll is compiled for .NET 3.5
+The .dll is compiled for .NET 4
 
-If it's running on other Exchange versions not mentioned here, please notify me, so I can update it here.
+There's a .dll for Exchange 2013, but not yet fully tested
 
 ### Exchange 2013
 
@@ -34,14 +34,15 @@ Exchange 2007 SP3 .dll is build and can be found in the release directory. Pleas
 ## Installing the Receive Agent
 
 1. Download the .zip and extract it e.g. on the Desktop: [Exchange CatchAll Master.zip](https://github.com/Pro/exchange-catchall/archive/master.zip)
-2. If you want to use MySQL, then install MySQL Server and execute the commands from `database.sql` to create the corresponding tables (modify the commands if needed). Don't forget to grant permissions to the user.
-3. Open "Exchange Management Shell" from the Startmenu
-4. Execute the following command to allow execution of local scripts (will be reset at last step): `Set-ExecutionPolicy Unrestricted`
-5. Cd into the folder where the zip has been extracted.
-6. Execute the install script `.\install.ps1`
-7. Follow the instructions. For the configuration see next section.
-8. Reset the execution policy: `Set-ExecutionPolicy Restricted`
-9. Check EventLog for errors or warnings.
+2. Install [.Net Framework 4](http://www.microsoft.com/downloads/details.aspx?FamilyID=0a391abd-25c1-4fc0-919f-b21f31ab88b7&displaylang=en) (on Windows Server 2012 already installed): 
+3. If you want to use MySQL, then install MySQL Server and execute the commands from `database.sql` to create the corresponding tables (modify the commands if needed). Don't forget to grant permissions to the user.
+4. Open "Exchange Management Shell" from the Startmenu
+5. Execute the following command to allow execution of local scripts (will be reset at last step): `Set-ExecutionPolicy Unrestricted`
+6. Cd into the folder where the zip has been extracted.
+7. Execute the install script `.\install.ps1`
+8. Follow the instructions. For the configuration see next section.
+9. Reset the execution policy: `Set-ExecutionPolicy Restricted`
+10. Check EventLog for errors or warnings.
  Hint: you can create a user defined view in EventLog and then select "Per Source" and as the value "Exchange CatchAll"
 
 Make sure that the priority of the CatchAll Agent is quite high (best is to set it directly after any Antivirus system).
@@ -93,7 +94,7 @@ Possible values:
 
 ## Updating the Transport Agent
 
-If you want to update the Exchange DKIM Transport Agent simply redownload the .zip file and follow the steps in the installation section.
+If you want to update the Exchange DKIM Transport Agent simply re-download the .zip file and follow the steps in the installation section.
 
 ## Uninstalling the Transport Agent
 
@@ -138,3 +139,7 @@ If you want to debug the .dll on your Exchange Server, you need to install [Visu
 	- Added custom X-OrigTo header.
 	- Added install and uninstall script.
 	- Added build for all Exchange 2010 Versions with different SPs.
+
+## TODO
+
+* Use regex for catchAll domain
