@@ -5,7 +5,8 @@ CatchAll Agent for Exchange Server.
 
 This code is based on the work of http://catchallagent.codeplex.com/
 
-You can define a domain or subdomain and redirect all E-Mails sent to this domain to forward them to another address.
+You can define a domain or regex (regular expression) and redirect all E-Mails sent to this domain to forward them to another address.
+
 Using MySQL (not required for basic functionality) you get additional features:
 - you can block E-Mails sent to specific addresses of such a catchall domain.
 - the number of blocked hits will be logged
@@ -13,13 +14,11 @@ Using MySQL (not required for basic functionality) you get additional features:
 
 ## Supported versions
 
-The .dll is compiled for .NET 4
-
-There's a .dll for Exchange 2013, but not yet fully tested
+The .dll is compiled for .NET 3.5 (Exchange 2007 and 2010) or .NET 4 (Exchange 2012)
 
 ### Exchange 2013
 
-See http://technet.microsoft.com/en-us/library/jj591524%28v=exchg.150%29.aspx for instructions on how to use .dll compiled for Exchange 2010
+This Receive Agent is fully tested under Exchange 2013
 
 ### Exchange 2010
 
@@ -34,15 +33,14 @@ Exchange 2007 SP3 .dll is build and can be found in the release directory. Pleas
 ## Installing the Receive Agent
 
 1. Download the .zip and extract it e.g. on the Desktop: [Exchange CatchAll Master.zip](https://github.com/Pro/exchange-catchall/archive/master.zip)
-2. Install [.Net Framework 4](http://www.microsoft.com/downloads/details.aspx?FamilyID=0a391abd-25c1-4fc0-919f-b21f31ab88b7&displaylang=en) (on Windows Server 2012 already installed): 
-3. If you want to use MySQL, then install MySQL Server and execute the commands from `database.sql` to create the corresponding tables (modify the commands if needed). Don't forget to grant permissions to the user.
-4. Open "Exchange Management Shell" from the Startmenu
-5. Execute the following command to allow execution of local scripts (will be reset at last step): `Set-ExecutionPolicy Unrestricted`
-6. Cd into the folder where the zip has been extracted.
-7. Execute the install script `.\install.ps1`
-8. Follow the instructions. For the configuration see next section.
-9. Reset the execution policy: `Set-ExecutionPolicy Restricted`
-10. Check EventLog for errors or warnings.
+2. If you want to use MySQL, then install MySQL Server and execute the commands from `database.sql` to create the corresponding tables (modify the commands if needed). Don't forget to grant permissions to the user.
+3. Open "Exchange Management Shell" from the Startmenu
+4. Execute the following command to allow execution of local scripts (will be reset at last step): `Set-ExecutionPolicy Unrestricted`
+5. Cd into the folder where the zip has been extracted.
+6. Execute the install script `.\install.ps1`
+7. Follow the instructions. For the configuration see next section.
+8. Reset the execution policy: `Set-ExecutionPolicy Restricted`
+9. Check EventLog for errors or warnings.
  Hint: you can create a user defined view in EventLog and then select "Per Source" and as the value "Exchange CatchAll"
 
 Make sure that the priority of the CatchAll Agent is quite high (best is to set it directly after any Antivirus system).
@@ -53,8 +51,9 @@ To change the priority use `Set-TransportAgent -Identity "Exchange CatchAll" -Pr
 ### Configuring the agent
 Edit the .config file to fit your needs.
 
-The `domainSection` defines the CatchAll domains. The configuration below forwards all E-Mails to `*@example.com` to the address `you@example.com` and `*@foo.com` to `you@foo.org`.
-The destination address must be handled by the local exchange server and cannot be an external E-Mail address. Also make sure that you don't create a circular redirection (using the same domain for `name` and `address`).
+The `domainSection` defines the CatchAll domains.
+The destination address must be handled by the local exchange server and cannot be an external E-Mail address. Don't forget to add the cathch all domain to Exchange.
+The Agent first checks if the recipient address is assigned to an existing user. If not, it checks if the address should be rewritten by the agent to a catchall address.
 
 The `customSection` defines different application settings:
 
@@ -63,14 +62,28 @@ The `customSection` defines different application settings:
 
 ```xml
     <domainSection>
+      <!-- Domain name comparison and the regex are case insensitive! -->
       <Domains>
-        <Domain name="example.com" address="you@example.org"/>
-        <Domain name="foo.com" address="you@foo.org" />
+         <!-- Redirect all E-Mail sent to an address with domain example.com to you@example.org -->
+        <Domain name="example.com" regex="false" address="you@example.org"/>
+        <!-- Use a regex to redirect. Redirects all mails to *@*.cathcall.com to *@example.org 
+        E.g. addr@bar.catchall.com -> bar@example.org
+        or xxx@sub.catchall.com -> sub@example.org        
+        -->
+        <Domain name="^.*@(.*)\.catchall.com$" regex="true" address="$1@example.org"/>
       </Domains>
     </domainSection>
     <customSection>
-      <general LogLevel="3" AddOrigToHeader="true" RejectIfBlocked="false" />
-      <database enabled="true" type="mysql" host="localhost" port="3306" database="catchall" user="catchall" password="catchall" />
+      <!-- LogLevel: 0 = off, 1 = error, 2 = error+warn, 3 = all
+          AddOrigToHeader: Enable/Disable 'X-OrigTo' header
+          RejectIfBlocked: If recipient blocked in database, directly send error to sender. Otherwise the address will be handled by Exchange which then decides the action.
+      -->
+      <general LogLevel="3" AddOrigToHeader="true" RejectIfBlocked="false"/>
+      <!-- Database settings.
+      enabled: enable/disable database logging/block checking
+      type: currently only mysql supported  
+      -->
+      <database enabled="true" type="mysql" host="localhost" port="3306" database="catchall" user="catchall" password="catchall"/>
     </customSection>
 ```
 
@@ -78,12 +91,6 @@ The `customSection` defines different application settings:
 #### Logging
 The CatchAll agent logs by default all errors and warnings into EventLog.
 You can set the LogLevel in the .config file:
-
-```xml
-<setting name="LogLevel" serializeAs="String">
-  <value>2</value>
-</setting> 
-```
 
 Possible values:
 * 0 = no logging
@@ -122,7 +129,7 @@ Microsoft.Exchange.Data.Transport.xml
 into the corresponding subdirectory from the Lib directory of this project.
 
 #### Debugging
-If you want to debug the .dll on your Exchange Server, you need to install [Visual Studio Remote Debugging](msdn.microsoft.com/en-us/library/vstudio/bt727f1t.aspx) on the Server.
+If you want to debug the .dll on your Exchange Server, you need to install [Visual Studio Remote Debugging](http://msdn.microsoft.com/en-us/library/vstudio/bt727f1t.aspx) on the Server.
 
 1. After the Remote Debugging Tools are installed on the Server, open Visual Studio
 2. Compile the .dll with Debug information
@@ -134,6 +141,9 @@ If you want to debug the .dll on your Exchange Server, you need to install [Visu
 8. When reached, the process should stop at the breakpoint
 
 ## Changelog
+
+* 27.11.2013 [1.5.1]:
+	- Support for regex domains
 
 * 25.11.2013 [1.5.0.0]:
 	- Added custom X-OrigTo header.

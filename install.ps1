@@ -5,14 +5,15 @@ write-host "[2] Exchange 2010 (no Service Pack)" -f "cyan"
 write-host "[3] Exchange 2010 SP1" -f "cyan"
 write-host "[4] Exchange 2010 SP2" -f "cyan"
 write-host "[5] Exchange 2010 SP3" -f "cyan"
+write-host "[6] Exchange 2013" -f "cyan"
 
 write-host ""
 do { 
 	$version = read-host "Your selection"
-	if ($version -lt 1 -or $version -gt 5) {
+	if ($version -lt 1 -or $version -gt 6) {
 		write-host "Invalid selection. Please input the number in the squares." -f "red"
 	} 
-} until ($version -ge 1 -and $version -le 5) 
+} until ($version -ge 1 -and $version -le 6) 
 
 $EXDIR="C:\Program Files\Exchange CatchAll" 
 if ($version -eq 1) {
@@ -25,6 +26,8 @@ if ($version -eq 1) {
 	$SRCDIR="CatchAllAgent\bin\Exchange 2010 S23"
 } elseif ($version -eq 5) {
 	$SRCDIR="CatchAllAgent\bin\Exchange 2010 SP3"
+} elseif ($version -eq 6) {
+	$SRCDIR="CatchAllAgent\bin\Exchange 2013"
 }
 
 write-host "Creating registry key for EventLog" -f "green"
@@ -41,15 +44,13 @@ write-host "Creating install directory: '$EXDIR' and copying data from '$SRCDIR'
 new-item -Type Directory -path $EXDIR -ErrorAction SilentlyContinue 
 
 copy-item "$SRCDIR\ExchangeCatchAll.dll" $EXDIR -force 
-if (Test-Path "$SRCDIR\ExchangeCatchAll.dll.config")
-{
-	$overwrite = read-host "Configuration already exists. Do you want to overwrite it? [Y/N]"
-	if ($overwrite -eq "Y") {
-		copy-item "$SRCDIR\ExchangeCatchAll.dll.config" $EXDIR -force
-	}
-} else {
+$overwrite = read-host "Do you want to copy (and overwrite) the config file: '$SRCDIR\ExchangeCatchAll.dll'? [Y/N]"
+if ($overwrite -eq "Y" -or $overwrite -eq "y") {
 	copy-item "$SRCDIR\ExchangeCatchAll.dll.config" $EXDIR -force
+} else {
+	write-host "Not copying config file" -f "yellow"
 }
+
 copy-item "$SRCDIR\mysql.data.dll" $EXDIR -force 
 
 read-host "Now open '$EXDIR\ExchangeCatchAll.dll.config' to configure Exchange CatchAll. When done and saved press 'Return'"

@@ -61,6 +61,7 @@ namespace Exchange.CatchAll
     using Microsoft.Exchange.Data.Mime;
     using ConfigurationSettings;
     using System.Configuration;
+    using System.Text.RegularExpressions;
 
 
     /// <summary>
@@ -75,12 +76,9 @@ namespace Exchange.CatchAll
 
         private static SmtpResponse rejectResponse = new SmtpResponse("550", "5.1.1", "Recipient rejected");
 
-        /// <summary>
-        /// The (domain to) catchall address map
-        /// </summary>
-        private Dictionary<string, RoutingAddress> addressMap;
+         private Dictionary<int, string[]> origToMapping;
 
-        private Dictionary<int, string[]> origToMapping;
+         private List<DomainElement> domainList;
 
         /// <summary>
         /// The database connector for logging and blocked check
@@ -106,8 +104,8 @@ namespace Exchange.CatchAll
                 return;
             }
 
-            addressMap = new Dictionary<string, RoutingAddress>();
-
+            domainList = new List<DomainElement>();
+            
             if (domains.Domains.Count == 0)
             {
                 Logger.LogWarning("No domains configured for CatchAll. I've nothing to do...");
@@ -115,14 +113,19 @@ namespace Exchange.CatchAll
             else
             {
                 string domainStr = "";
-                foreach (Domain d in domains.Domains)
+                foreach (DomainElement d in domains.Domains)
                 {
-                    if (!RoutingAddress.IsValidAddress(d.Address))
+                    if (!d.Regex && !RoutingAddress.IsValidAddress(d.Address))
                     {
                         Logger.LogError("Invalid address for domain: " + d.Name + ". '" + d.Address);
                         continue;
                     }
-                    addressMap.Add(d.Name.ToLower(), new RoutingAddress(d.Address));
+                    else if (d.Regex && !d.compileRegex())
+                    {
+                        Logger.LogError("Invalid regex for domain: " + d.Name + ". '" + d.Address);
+                        continue;
+                    }
+                    domainList.Add(d);
 
                     if (domainStr.Length > 0)
                         domainStr += ", ";
@@ -177,33 +180,53 @@ namespace Exchange.CatchAll
         /// <param name="eodArgs">The event arguments.</param>
         public void RcptToHandler(ReceiveCommandEventSource source, RcptCommandEventArgs rcptArgs)
         {
-            RoutingAddress catchAllAddress;
-
-            // Check whether to handle the recipient's domain
-            if (this.addressMap.TryGetValue(
-                rcptArgs.RecipientAddress.DomainPart.ToLower(),
-                out catchAllAddress))
+            //check if recipient exists in exchange address book
+            if (this.addressBook != null && this.addressBook.Find(rcptArgs.RecipientAddress) != null)
             {
-                // Check if address assigned to user. If not, check if blocked.
-                if (this.addressBook != null && this.addressBook.Find(rcptArgs.RecipientAddress) == null) {
-                    if (!this.databaseConnector.isBlocked(rcptArgs.RecipientAddress.ToString().ToLower()))
-                    {
-                        Logger.LogInformation("Cought: " + rcptArgs.RecipientAddress.ToString().ToLower());
-                        string[] addrs = new string[] { rcptArgs.RecipientAddress.ToString().ToLower(), catchAllAddress.ToString().ToLower() };
-                        origToMapping.Add(rcptArgs.MailItem.GetHashCode(), addrs);
-                        rcptArgs.RecipientAddress = catchAllAddress;
-                    }
-                    else
-                    {
-                        // reject email, because address is blocked
+                //recipient is an existing user
+                return;
+            }
 
-                        Logger.LogInformation("Recipient blocked: " + rcptArgs.RecipientAddress.ToString().ToLower());
 
-                        if (CatchAllFactory.AppSettings.RejectIfBlocked)
-                            source.RejectCommand(CatchAllAgent.rejectResponse);              
-                       
-                    } 
+            string replaceWith = null;
+            foreach (DomainElement d in domainList)
+            {
+                if (!d.Regex && d.Name.ToLower().Equals(rcptArgs.RecipientAddress.DomainPart.ToLower()))
+                {
+                    replaceWith = d.Address;
+                    break;
                 }
+                else if (d.Regex)
+                {
+                    if (d.RegexCompiled.Match(rcptArgs.RecipientAddress.ToString().ToLower()).Success){
+                        replaceWith = d.RegexCompiled.Replace(rcptArgs.RecipientAddress.ToString().ToLower(), d.Address.ToLower());
+
+                        break;
+                    }
+                }
+            }
+
+            if (replaceWith != null)
+            {
+                RoutingAddress catchAllAddress = new RoutingAddress(replaceWith);
+
+                if (!this.databaseConnector.isBlocked(rcptArgs.RecipientAddress.ToString().ToLower()))
+                {
+                    Logger.LogInformation("Cought: " + rcptArgs.RecipientAddress.ToString().ToLower() + " -> " + catchAllAddress.ToString());
+                    string[] addrs = new string[] { rcptArgs.RecipientAddress.ToString().ToLower(), catchAllAddress.ToString().ToLower() };
+                    origToMapping.Add(rcptArgs.MailItem.GetHashCode(), addrs);
+                    rcptArgs.RecipientAddress = catchAllAddress;
+                }
+                else
+                {
+                    // reject email, because address is blocked
+
+                    Logger.LogInformation("Recipient blocked: " + rcptArgs.RecipientAddress.ToString().ToLower());
+
+                    if (CatchAllFactory.AppSettings.RejectIfBlocked)
+                        source.RejectCommand(CatchAllAgent.rejectResponse);              
+                       
+                } 
             }
 
             return;

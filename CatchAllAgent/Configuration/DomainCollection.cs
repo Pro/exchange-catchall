@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ConfigurationSettings
 {
-    [ConfigurationCollection(typeof(Domain))]
+    [ConfigurationCollection(typeof(DomainElement))]
     public class DomainCollection : ConfigurationElementCollection
     {
         internal const string PropertyName = "Domain";
@@ -40,19 +40,19 @@ namespace ConfigurationSettings
 
         protected override ConfigurationElement CreateNewElement()
         {
-            return new Domain();
+            return new DomainElement();
         }
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((Domain)(element)).Name;
+            return ((DomainElement)(element)).Name;
         }
 
-        public Domain this[int idx]
+        public DomainElement this[int idx]
         {
             get
             {
-                return (Domain)BaseGet(idx);
+                return (DomainElement)BaseGet(idx);
             }
         }
     }
