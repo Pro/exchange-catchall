@@ -24,26 +24,35 @@ namespace Exchange.CatchAll
                 return;
             }
 
-            if (settings.Type.Equals("mysql", StringComparison.OrdinalIgnoreCase))
+            if (settings.Enabled)
             {
-                string myConnectionString = "SERVER=" + settings.Host + ";PORT=" + settings.Port + ";" +
-                                                "UID=" + settings.User + ";" +
-                                                "PWD=" + settings.Password + ";" +
-                                                "DATABASE=" + settings.Schema + ";";
-                try
+                if (settings.Type.Equals("mysql", StringComparison.OrdinalIgnoreCase))
                 {
-                    sqlConnection = new MySqlConnection(myConnectionString);
+                    string myConnectionString = "SERVER=" + settings.Host + ";PORT=" + settings.Port + ";" +
+                                                    "UID=" + settings.User + ";" +
+                                                    "PWD=" + settings.Password + ";" +
+                                                    "DATABASE=" + settings.Schema + ";";
+                    try
+                    {
+                        sqlConnection = new MySqlConnection(myConnectionString);
+                    }
+                    catch (MySqlException ex)
+                    {
+                        Logger.LogError("Couldn't open database connection: " + ex.Message + "\n Not using database");
+                        Trace.WriteLine("SQL Exception: " + ex.Message);
+                    }
                 }
-                catch (MySqlException ex)
+                else
                 {
-                    Logger.LogError("Couldn't open database connection: " + ex.Message + "\n Not using database");
-                    Trace.WriteLine("SQL Exception: " + ex.Message);
+                    Logger.LogError("Configuration: Database has invalid type setting: " + settings.Type + "\nMust be 'mysql'.");
                 }
             }
             else
             {
-                Logger.LogError("Configuration: Database has invalid type setting: " + settings.Type + "\nMust be 'mysql'.");
-            }            
+                Logger.LogInformation("Database connection disabled in config file.");
+            }
+
+                      
         }
 
         public void LogCatch(string original, string replaced, string subject, string message_id)
