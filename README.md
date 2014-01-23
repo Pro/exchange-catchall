@@ -16,19 +16,15 @@ Using MySQL (not required for basic functionality) you get additional features:
 
 The .dll is compiled for .NET 3.5 (Exchange 2007 and 2010) or .NET 4 (Exchange 2012)
 
-### Exchange 2013
-
-This Receive Agent is fully tested under Exchange 2013
-
-### Exchange 2010
-
-This Receive Agent is fully tested under Exchange 2010 SP3 with Windows Server 2008 R2.
-
-There's are also compiled versions for no Service Pack, SP1 and SP2 installed.
-
-### Exchange 2007
-
-Exchange 2007 SP3 .dll is build and can be found in the release directory. Please check if those are working for you and send me a short notice.
+* Exchange 2007 SP3 (8.3.*)
+* Exchange 2010     (14.0.*)
+* Exchange 2010 SP1 (14.1.*)
+* Exchange 2010 SP2 (14.2.*)
+* Exchange 2010 SP3 (14.3.*)
+* Exchange 2013     (15.0.516.32)
+* Exchange 2013 CU1 (15.0.620.29)
+* Exchange 2013 CU2 (15.0.712.24)
+* Exchange 2013 CU3 (15.0.775.38)
 
 ## Installing the Receive Agent
 
@@ -141,6 +137,10 @@ If you want to debug the .dll on your Exchange Server, you need to install [Visu
 8. When reached, the process should stop at the breakpoint
 
 ## Changelog
+
+* 24.01.2014 [1.5.2]:
+	- Fixed database disable config (not correctly evaluated)
+	- Added additional supported Exchange versions (2007, 2010, 2013)
 
 * 27.11.2013 [1.5.1]:
 	- Support for regex domains

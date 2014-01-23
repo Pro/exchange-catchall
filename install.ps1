@@ -1,34 +1,45 @@
 write-host " *** Exchange CatchAll Install Script ***" -f "blue"
-write-host "Please select your Exchange Version from the following list:" -f "cyan"
-write-host "[1] Exchange 2007 SP3" -f "cyan"
-write-host "[2] Exchange 2010 (no Service Pack)" -f "cyan"
-write-host "[3] Exchange 2010 SP1" -f "cyan"
-write-host "[4] Exchange 2010 SP2" -f "cyan"
-write-host "[5] Exchange 2010 SP3" -f "cyan"
-write-host "[6] Exchange 2013" -f "cyan"
 
-write-host ""
-do { 
-	$version = read-host "Your selection"
-	if ($version -lt 1 -or $version -gt 6) {
-		write-host "Invalid selection. Please input the number in the squares." -f "red"
-	} 
-} until ($version -ge 1 -and $version -le 6) 
-
+# Exchange 2007 SP3 (8.3.*)
+# Exchange 2010     (14.0.*)
+# Exchange 2010 SP1 (14.1.*)
+# Exchange 2010 SP2 (14.2.*)
+# Exchange 2010 SP3 (14.3.*)
+# Exchange 2013     (15.0.516.32)
+# Exchange 2013 CU1 (15.0.620.29)
+# Exchange 2013 CU2 (15.0.712.24)
+# Exchange 2013 CU3 (15.0.775.38)
+write-host "Detecting Exchange version ... " -f "cyan"
+$hostname = hostname
+$exchserver = Get-ExchangeServer -Identity $hostname
 $EXDIR="C:\Program Files\Exchange CatchAll" 
-if ($version -eq 1) {
-	$SRCDIR="CatchAllAgent\bin\Exchange 2007 SP3"
-} elseif ($version -eq 2) {
-	$SRCDIR="CatchAllAgent\bin\Exchange 2010"
-} elseif ($version -eq 3) {
-	$SRCDIR="CatchAllAgent\bin\Exchange 2010 SP1"
-} elseif ($version -eq 4) {
-	$SRCDIR="CatchAllAgent\bin\Exchange 2010 S23"
-} elseif ($version -eq 5) {
-	$SRCDIR="CatchAllAgent\bin\Exchange 2010 SP3"
-} elseif ($version -eq 6) {
-	$SRCDIR="CatchAllAgent\bin\Exchange 2013"
+$EXVER="Unknown"
+if (($exchserver.admindisplayversion).major -eq 8 -and ($exchserver.admindisplayversion).minor -eq 3) {
+	$EXVER="Exchange 2007 SP3"
+} elseif (($exchserver.admindisplayversion).major -eq 14 -and ($exchserver.admindisplayversion).minor -eq 0) {
+	$EXVER="Exchange 2010"
+} elseif (($exchserver.admindisplayversion).major -eq 14 -and ($exchserver.admindisplayversion).minor -eq 1) {
+	$EXVER="Exchange 2010 SP1"
+} elseif (($exchserver.admindisplayversion).major -eq 14 -and ($exchserver.admindisplayversion).minor -eq 2) {
+	$EXVER="Exchange 2010 SP2"
+} elseif (($exchserver.admindisplayversion).major -eq 14 -and ($exchserver.admindisplayversion).minor -eq 3) {
+	$EXVER="Exchange 2010 SP3"
+} elseif (($exchserver.admindisplayversion).major -eq 15 -and ($exchserver.admindisplayversion).minor -eq 0 -and ($exchserver.admindisplayversion).build -eq 516) {
+	$EXVER="Exchange 2013"
+} elseif (($exchserver.admindisplayversion).major -eq 15 -and ($exchserver.admindisplayversion).minor -eq 0 -and ($exchserver.admindisplayversion).build -eq 620) {
+	$EXVER="Exchange 2013 CU1"
+} elseif (($exchserver.admindisplayversion).major -eq 15 -and ($exchserver.admindisplayversion).minor -eq 0 -and ($exchserver.admindisplayversion).build -eq 712) {
+	$EXVER="Exchange 2013 CU2"
+} elseif (($exchserver.admindisplayversion).major -eq 15 -and ($exchserver.admindisplayversion).minor -eq 0 -and ($exchserver.admindisplayversion).build -eq 775) {
+	$EXVER="Exchange 2013 CU3"
 }
+else {
+	throw "The exchange version is not yet supported: $exchserver.admindisplayversion"
+}
+
+$SRCDIR="CatchAllAgent\bin\$EXVER"
+
+write-host "Found $EXVER" -f "green"
 
 write-host "Creating registry key for EventLog" -f "green"
 if (Test-Path "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\Application\Exchange CatchAll") {
