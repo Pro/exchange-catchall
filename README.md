@@ -14,7 +14,7 @@ Using MySQL (not required for basic functionality) you get additional features:
 
 ## Supported versions
 
-The .dll is compiled for .NET 3.5 (Exchange 2007 and 2010) or .NET 4 (Exchange 2012)
+The .dll is compiled for .NET 3.5 (Exchange 2007 and 2010) or .NET 4 (Exchange 2013)
 
 * Exchange 2007 SP3 (8.3.*)
 * Exchange 2010     (14.0.*)
