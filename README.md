@@ -150,6 +150,3 @@ If you want to debug the .dll on your Exchange Server, you need to install [Visu
 	- Added install and uninstall script.
 	- Added build for all Exchange 2010 Versions with different SPs.
 
-## TODO
-
-* Use regex for catchAll domain
