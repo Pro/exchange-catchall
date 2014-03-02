@@ -45,7 +45,7 @@ To get a list of all the Export Agents use the Command `Get-TransportAgent`
 
 To change the priority use `Set-TransportAgent -Identity "Exchange CatchAll" -Priority 3`
 
-If you have any problems installing, please check out the [troubleshooting guideline](https://github.com/Pro/exchange-catchall/TROUBLESHOOT.md)
+If you have any problems installing, please check out the [troubleshooting guideline](https://github.com/Pro/exchange-catchall/blob/master/TROUBLESHOOT.md)
  
 ### Configuring the agent
 Edit the .config file to fit your needs.
