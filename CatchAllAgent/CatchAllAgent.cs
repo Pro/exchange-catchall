@@ -214,7 +214,7 @@ namespace Exchange.CatchAll
                 {
                     Logger.LogInformation("Cought: " + rcptArgs.RecipientAddress.ToString().ToLower() + " -> " + catchAllAddress.ToString());
                     string[] addrs = new string[] { rcptArgs.RecipientAddress.ToString().ToLower(), catchAllAddress.ToString().ToLower() };
-                    origToMapping.Add(rcptArgs.MailItem.GetHashCode(), addrs);
+                    //origToMapping.Add(rcptArgs.MailItem.GetHashCode(), addrs);
                     rcptArgs.RecipientAddress = catchAllAddress;
                 }
                 else
