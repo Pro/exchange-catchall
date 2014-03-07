@@ -100,7 +100,7 @@ Possible values:
 
 ## Updating the Transport Agent
 
-If you want to update the Exchange DKIM Transport Agent simply re-download the .zip file and follow the steps in the installation section.
+If you want to update the Exchange CatchAll Transport Agent simply re-download the .zip file and follow the steps in the installation section.
 
 ## Uninstalling the Transport Agent
 
