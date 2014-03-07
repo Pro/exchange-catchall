@@ -106,10 +106,6 @@ If you want to update the Exchange CatchAll Transport Agent simply re-download t
 
 Follow the install instructions but execute `.\uninstall.ps1` instead.
 
-## Known bugs
-
-None
-
 ## Notes for developers
 
 ### Required DLLs for developing
