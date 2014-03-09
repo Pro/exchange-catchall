@@ -48,7 +48,5 @@ namespace ConfigurationSettings
                 this["RejectIfBlocked"] = value;
             }
         }
-
-
     }
 }

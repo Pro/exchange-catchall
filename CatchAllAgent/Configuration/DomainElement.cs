@@ -9,7 +9,6 @@ namespace ConfigurationSettings
 {
     public class DomainElement : ConfigurationElement
     {
-
         [ConfigurationProperty("name", DefaultValue = "", IsKey = true, IsRequired = true)]
         public string Name
         {
@@ -71,6 +70,5 @@ namespace ConfigurationSettings
                 this["address"] = value;
             }
         }
-
     }
 }

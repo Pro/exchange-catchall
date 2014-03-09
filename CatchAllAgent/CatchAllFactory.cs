@@ -14,7 +14,6 @@ namespace Exchange.CatchAll
     /// </summary>
     public class CatchAllFactory : SmtpReceiveAgentFactory
     {
-
         /// <summary>
         /// Creates a CatchAllAgent instance.
         /// </summary>
@@ -22,7 +21,6 @@ namespace Exchange.CatchAll
         /// <returns>An agent instance.</returns>
         public override SmtpReceiveAgent CreateAgent(SmtpServer server)
         {
-
             AppSettings = GetCustomConfig<ConfigurationSettings.General>("customSection/general");
             return new CatchAllAgent(server.AddressBook);
         }
@@ -33,13 +31,11 @@ namespace Exchange.CatchAll
 
         public static TConfig GetCustomConfig<TConfig>(string sectionName) where TConfig : ConfigurationSection
         {
-            AppDomain.CurrentDomain.AssemblyResolve += new
-                ResolveEventHandler(ConfigResolveEventHandler);
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(ConfigResolveEventHandler);
             configurationDefiningAssembly = Assembly.LoadFrom(Assembly.GetExecutingAssembly().Location);
             var exeFileMap = new ExeConfigurationFileMap();
             exeFileMap.ExeConfigFilename = Assembly.GetExecutingAssembly().Location+".config";
-            var customConfig = ConfigurationManager.OpenMappedExeConfiguration(exeFileMap,
-                ConfigurationUserLevel.None);
+            var customConfig = ConfigurationManager.OpenMappedExeConfiguration(exeFileMap, ConfigurationUserLevel.None);
             var returnConfig = customConfig.GetSection(sectionName) as TConfig;
             AppDomain.CurrentDomain.AssemblyResolve -= ConfigResolveEventHandler;
             return returnConfig;
@@ -50,5 +46,4 @@ namespace Exchange.CatchAll
             return configurationDefiningAssembly;
         }
     }
-
 }

@@ -21,7 +21,6 @@ if (Test-Path "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\Application\Exch
 	write-host "Key already removed. Continuing..." -f "yellow"
 }
 
-
 write-host "Starting Transport..."  -f "green"
 Net Start MSExchangeTransport 
  
