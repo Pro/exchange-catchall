@@ -34,71 +34,17 @@ namespace ConfigurationSettings
             }
         }
 
-        [ConfigurationProperty("host", DefaultValue = "", IsKey = false, IsRequired = false)]
-        public string Host
+        [ConfigurationProperty("connectionstrings", DefaultValue = "", IsKey = false, IsRequired = true)]
+        public string ConnectionStrings
         {
             get
             {
-                return (string)this["host"];
+                return (string)this["connectionstrings"];
             }
             set
             {
-                this["host"] = value;
+                this["connectionstrings"] = value;
             }
         }
-
-        [ConfigurationProperty("port", DefaultValue = 3306, IsKey = false, IsRequired = false)]
-        [IntegerValidator(ExcludeRange = false, MaxValue = 65535, MinValue = 1)]
-        public int Port
-        {
-            get
-            {
-                return (int)this["port"];
-            }
-            set
-            {
-                this["port"] = value;
-            }
-        }
-
-        [ConfigurationProperty("database", DefaultValue = "", IsKey = false, IsRequired = false)]
-        public string Schema
-        {
-            get
-            {
-                return (string)this["database"];
-            }
-            set
-            {
-                this["database"] = value;
-            }
-        }
-
-        [ConfigurationProperty("user", DefaultValue = "", IsKey = false, IsRequired = false)]
-        public string User
-        {
-            get
-            {
-                return (string)this["user"];
-            }
-            set
-            {
-                this["user"] = value;
-            }
-        }
-
-        [ConfigurationProperty("password", DefaultValue = "", IsKey = false, IsRequired = false)]
-        public string Password
-        {
-            get
-            {
-                return (string)this["password"];
-            }
-            set
-            {
-                this["password"] = value;
-            }
-        }
-
     }
 }

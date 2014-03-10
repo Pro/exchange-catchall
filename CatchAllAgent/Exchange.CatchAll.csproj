@@ -252,6 +252,8 @@
     <Compile Include="Configuration\DomainSection.cs" />
     <Compile Include="DatabaseConnector.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="MssqlConnector.cs" />
+    <Compile Include="MysqlConnector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

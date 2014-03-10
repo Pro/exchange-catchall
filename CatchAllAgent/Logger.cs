@@ -10,7 +10,6 @@ namespace Exchange.CatchAll
     {
         private static EventLog logger = null;
 
-
         public static void LogInformation(string message, int id = 0)
         {
             if (CatchAllFactory.AppSettings.LogLevel >= 3)
@@ -40,8 +39,8 @@ namespace Exchange.CatchAll
                     EventLog.CreateEventSource(logger.Source,"Application");
                 }
             }
-            logger.WriteEntry(message, logType, id);
 
+            logger.WriteEntry(message, logType, id);
         }
     }
 }

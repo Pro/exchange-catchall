@@ -1,5 +1,4 @@
-﻿
-// 2) Add entries to the config.xml for the domains for which
+﻿// 1) Add entries to the config.xml for the domains for which
 //    you want catch all to be working. Entries look like this:
 //    <config>
 //	    <domain name="domain1.com" address="catchall@domain1.com" />
@@ -10,9 +9,9 @@
 //    exist. Otherwise the message will NDR, or Recipient 
 //    Filtering will reject the message.
 //
-// 3) Use the install-transportagent task to install the agent
+// 2) Use the install-transportagent task to install the agent
 //
-// 4) Use the enable-transportagent task to enable the agent. 
+// 3) Use the enable-transportagent task to enable the agent. 
 //    It's important to specify a priority which is higher than
 //    the priority of the Recipient Filtering agent.
 //
@@ -45,24 +44,21 @@
 
 namespace Exchange.CatchAll
 {
+    using ConfigurationSettings;
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Reflection;
     using System.IO;
     using System.Xml;
     using System.Globalization;
     using System.Diagnostics;
+    using System.Text.RegularExpressions;
     using System.Threading;
 
     using Microsoft.Exchange.Data.Transport;
     using Microsoft.Exchange.Data.Transport.Smtp;
-
-    using MySql.Data.MySqlClient;
     using Microsoft.Exchange.Data.Mime;
-    using ConfigurationSettings;
-    using System.Configuration;
-    using System.Text.RegularExpressions;
-
 
     /// <summary>
     /// CatchAllAgent: An SmtpReceiveAgent implementing catch-all.
@@ -76,9 +72,9 @@ namespace Exchange.CatchAll
 
         private static SmtpResponse rejectResponse = new SmtpResponse("550", "5.1.1", "Recipient rejected");
 
-         private Dictionary<int, string[]> origToMapping;
+        private Dictionary<int, string[]> origToMapping;
 
-         private List<DomainElement> domainList;
+        private List<DomainElement> domainList;
 
         /// <summary>
         /// The database connector for logging and blocked check
@@ -134,17 +130,44 @@ namespace Exchange.CatchAll
                 Logger.LogInformation("Following domains configured for CatchAll: " + domainStr);
             }
 
-            databaseConnector = new DatabaseConnector();
+            Database settings = CatchAllFactory.GetCustomConfig<Database>("customSection/database");
+            if (settings == null)
+            {
+                Logger.LogWarning("No database settings found. Not using database connection.");
+                return;
+            }
 
-            
+            if (settings.Enabled)
+            {
+                switch(settings.Type.ToLower())
+                {
+                    case "mysql":
+                        databaseConnector = new MysqlConnector(settings.ConnectionStrings);
+                        break;
+                    case "mssql":
+                        databaseConnector = new MssqlConnector(settings.ConnectionStrings);
+                        break;
+                    //case "oracle":
+                    //    databaseConnector = new OracleConnector(settings.ConnectionStrings);
+                    //    break;
+                    //case "db2":
+                    //    databaseConnector = new Db2Connector(settings.ConnectionStrings);
+                    //    break;
+                    default :
+                        Logger.LogError("Configuration: Database has invalid type setting: " + settings.Type + "\nMust be 'mysql'.");
+                        break;
+                }
+            }
+            else
+            {
+                Logger.LogInformation("Database connection disabled in config file.");
+            }
+    
             this.OnEndOfData += new EndOfDataEventHandler(this.OnEndOfDataHandler);
-
             this.OnRcptCommand += new RcptCommandEventHandler(this.RcptToHandler);
         }
 
-        private void OnEndOfDataHandler(
-            ReceiveMessageEventSource source,
-            EndOfDataEventArgs e)
+        private void OnEndOfDataHandler(ReceiveMessageEventSource source, EndOfDataEventArgs e)
         {
             string[] addrs;
             if (this.origToMapping.TryGetValue(e.MailItem.GetHashCode(), out addrs))
@@ -158,6 +181,7 @@ namespace Exchange.CatchAll
                     MimeDocument mdMimeDoc = e.MailItem.Message.MimeDocument;
                     HeaderList hlHeaderlist = mdMimeDoc.RootPart.Headers;
                     Header origToHeader = hlHeaderlist.FindFirst("X-OrigTo");
+
                     if (origToHeader == null)
                     {
                         MimeNode lhLasterHeader = hlHeaderlist.LastChild;
@@ -170,7 +194,6 @@ namespace Exchange.CatchAll
                     } 
                 }
             }
-
         }
 
         /// <summary>
@@ -186,7 +209,6 @@ namespace Exchange.CatchAll
                 //recipient is an existing user
                 return;
             }
-
 
             string replaceWith = null;
             foreach (DomainElement d in domainList)
@@ -220,18 +242,14 @@ namespace Exchange.CatchAll
                 else
                 {
                     // reject email, because address is blocked
-
                     Logger.LogInformation("Recipient blocked: " + rcptArgs.RecipientAddress.ToString().ToLower());
 
                     if (CatchAllFactory.AppSettings.RejectIfBlocked)
-                        source.RejectCommand(CatchAllAgent.rejectResponse);              
-                       
+                        source.RejectCommand(CatchAllAgent.rejectResponse);                       
                 } 
             }
 
             return;
         }
     }
-    
-    
 }

@@ -10,6 +10,7 @@ write-host " *** Exchange CatchAll Install Script ***" -f "blue"
 # Exchange 2013 CU2 (15.0.712.24)
 # Exchange 2013 CU3 (15.0.775.38)
 # Exchange 2013 SP1 (15.0.847.32)
+
 write-host "Detecting Exchange version ... " -f "cyan"
 $hostname = hostname
 $exchserver = Get-ExchangeServer -Identity $hostname
@@ -51,7 +52,6 @@ if (Test-Path "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\Application\Exch
 	New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\Application\Exchange CatchAll"
 }
 
-
 net stop MSExchangeTransport 
  
 write-host "Creating install directory: '$EXDIR' and copying data from '$SRCDIR'"  -f "green"
@@ -72,7 +72,7 @@ read-host "Now open '$EXDIR\ExchangeCatchAll.dll.config' to configure Exchange C
 write-host "Registering agent" -f "green"
 Install-TransportAgent -Name "Exchange CatchAll" -TransportAgentFactory "Exchange.CatchAll.CatchAllFactory" -AssemblyPath "$EXDIR\ExchangeCatchAll.dll"
 
-write-host "Enabling agent" -f "green" 
+write-host "Enabling agent" -f "green"
 enable-transportagent -Identity "Exchange CatchAll" 
 get-transportagent 
  
