@@ -1,31 +1,6 @@
-﻿// 1) Add entries to the config.xml for the domains for which
-//    you want catch all to be working. Entries look like this:
-//    <config>
-//	    <domain name="domain1.com" address="catchall@domain1.com" />
-// 	    <domain name="domain2.com" address="admin@domain2.com" />
-//    </config>
-//    Note: The messages will be redirected to the specified 
-//    'address' and it's important that those addresses really 
-//    exist. Otherwise the message will NDR, or Recipient 
-//    Filtering will reject the message.
-//
-// 2) Use the install-transportagent task to install the agent
-//
-// 3) Use the enable-transportagent task to enable the agent. 
-//    It's important to specify a priority which is higher than
-//    the priority of the Recipient Filtering agent.
-//
-// Features:
-//
-// 1. Changes to the configuration will be picked up 
-//    automatically.
-//
-// 2. If the new configuration is invalid, it will ignore the new
-//    configuration.
-//
-// 3. It's possible to dump traces to a file (traces.log in the 
-//    example below) by adding the following to the application 
-//    configuration file (edgetransport.exe.config):
+﻿// It's possible to dump traces to a file (traces.log in the 
+// example below) by adding the following to the application 
+// configuration file (edgetransport.exe.config):
 //
 //    <configuration>
 //      <system.diagnostics>
@@ -72,7 +47,7 @@ namespace Exchange.CatchAll
 
         private static SmtpResponse rejectResponse = new SmtpResponse("550", "5.1.1", "Recipient rejected");
 
-        private Dictionary<int, string[]> origToMapping;
+        private Dictionary<string, string[]> origToMapping;
 
         private List<DomainElement> domainList;
 
@@ -91,7 +66,7 @@ namespace Exchange.CatchAll
             // Save the address book and configuration
             this.addressBook = addressBook;
 
-            this.origToMapping = new Dictionary<int, string[]>();
+            this.origToMapping = new Dictionary<string, string[]>();
 
             DomainSection domains = CatchAllFactory.GetCustomConfig<DomainSection>("domainSection");
             if (domains == null)
@@ -154,7 +129,7 @@ namespace Exchange.CatchAll
                     //    databaseConnector = new Db2Connector(settings.ConnectionStrings);
                     //    break;
                     default :
-                        Logger.LogError("Configuration: Database has invalid type setting: " + settings.Type + "\nMust be 'mysql'.");
+                        Logger.LogError("Configuration: Database has invalid type setting: " + settings.Type + "\nMust be 'mysql' or 'mssql'.");
                         break;
                 }
             }
@@ -170,9 +145,11 @@ namespace Exchange.CatchAll
         private void OnEndOfDataHandler(ReceiveMessageEventSource source, EndOfDataEventArgs e)
         {
             string[] addrs;
-            if (this.origToMapping.TryGetValue(e.MailItem.GetHashCode(), out addrs))
+            //hash code is not guaranteed to be unique. Add time to fix uniqueness
+            string itemId = e.MailItem.GetHashCode().ToString() + e.MailItem.DateTimeReceived.ToString();
+            if (this.origToMapping.TryGetValue(itemId, out addrs))
             {
-                this.origToMapping.Remove(e.MailItem.GetHashCode());
+                this.origToMapping.Remove(itemId);
                 this.databaseConnector.LogCatch(addrs[0], addrs[1], e.MailItem.Message.Subject, e.MailItem.Message.MessageId);
 
                 //Add / update orig to header
@@ -234,9 +211,15 @@ namespace Exchange.CatchAll
 
                 if (!this.databaseConnector.isBlocked(rcptArgs.RecipientAddress.ToString().ToLower()))
                 {
-                    Logger.LogInformation("Cought: " + rcptArgs.RecipientAddress.ToString().ToLower() + " -> " + catchAllAddress.ToString());
-                    string[] addrs = new string[] { rcptArgs.RecipientAddress.ToString().ToLower(), catchAllAddress.ToString().ToLower() };
-                    //origToMapping.Add(rcptArgs.MailItem.GetHashCode(), addrs);
+                    Logger.LogInformation("Caught: " + rcptArgs.RecipientAddress.ToString().ToLower() + " -> " + catchAllAddress.ToString());
+                    // on Exchange 2013 SP1 it seems the RcptToHandler is called multiple times for the same MailItem
+                    // hash code is not guaranteed to be unique. Add time to fix uniqueness
+                    string itemId = rcptArgs.MailItem.GetHashCode().ToString() + rcptArgs.MailItem.DateTimeReceived.ToString();
+                    if (!origToMapping.ContainsKey(itemId))
+                    {
+                        string[] addrs = new string[] { rcptArgs.RecipientAddress.ToString().ToLower(), catchAllAddress.ToString().ToLower() };
+                        origToMapping.Add(itemId, addrs);
+                    }
                     rcptArgs.RecipientAddress = catchAllAddress;
                 }
                 else
