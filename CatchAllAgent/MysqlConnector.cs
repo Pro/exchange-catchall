@@ -34,7 +34,7 @@ namespace Exchange.CatchAll
 
                 MySqlCommand command = new MySqlCommand();
                 command.Connection = (MySqlConnection) sqlConnection;
-                command.CommandText = "INSERT INTO Cought (date, original, replaced, message_id, subject) " +
+                command.CommandText = "INSERT INTO Caught (date, original, replaced, message_id, subject) " +
                                         "Values(NOW(), @original, @replaced, @message_id, @subject)";
                 command.Parameters.AddWithValue("@original", original);
                 command.Parameters.AddWithValue("@replaced", replaced);
