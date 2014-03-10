@@ -13,7 +13,7 @@ Using MySQL (not required for basic functionality) you get additional features:
 - each forwarded E-Mail will be logged
 
 
-** Updating to Version >=1.6.0: ** Please read the following section before updating: [Updating to Version 1.6.0](#updating-to-version-160)!
+**Updating to Version >=1.6.0:** Please read the following section before updating: [Updating to Version 1.6.0](#updating-to-version-160)!
 
 ## Supported versions
 
