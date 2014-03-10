@@ -154,9 +154,11 @@
   <ItemGroup>
     <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Release Ex2007 SP3'">
       <HintPath>..\Lib\Exchange 2007 SP3\Microsoft.Exchange.Data.Common.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Release Ex2007 SP3'">
       <HintPath>..\Lib\Exchange 2007 SP3\Microsoft.Exchange.Data.Transport.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Release Ex2010'">
       <HintPath>..\Lib\Exchange 2010\Microsoft.Exchange.Data.Common.dll</HintPath>
@@ -255,9 +257,6 @@
     <Compile Include="MssqlConnector.cs" />
     <Compile Include="MysqlConnector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
