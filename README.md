@@ -1,4 +1,4 @@
-Exchange CatchAll Agent
+Exchange CatchAll Agent [![Build Status](https://travis-ci.org/Pro/exchange-catchall.png?branch=master)](https://travis-ci.org/Pro/exchange-catchall)
 =============
 
 CatchAll Agent for Exchange Server.
@@ -11,6 +11,9 @@ Using MySQL (not required for basic functionality) you get additional features:
 - you can block E-Mails sent to specific addresses of such a catchall domain.
 - the number of blocked hits will be logged
 - each forwarded E-Mail will be logged
+
+
+** Updating to Version >=1.6.0: ** Please read the following section before updating: [Updating to Version 1.6.0](#updating-to-version-1.6.0)!
 
 ## Supported versions
 
@@ -80,9 +83,10 @@ The `customSection` defines different application settings:
       <general LogLevel="3" AddOrigToHeader="true" RejectIfBlocked="false"/>
       <!-- Database settings.
       enabled: enable/disable database logging/block checking
-      type: currently only mysql supported  
+      type: mysql, mssql
+	  connectionstrings: Use this page for additional information: https://www.connectionstrings.com
       -->
-      <database enabled="true" type="mysql" host="localhost" port="3306" database="catchall" user="catchall" password="catchall"/>
+      <database enabled="true" type="mysql" connectionstrings="SERVER=localhost;PORT=3306;UID=catchall;PWD=catchall;DATABASE=catchall;"/>
     </customSection>
 ```
 
@@ -101,6 +105,27 @@ Possible values:
 ## Updating the Transport Agent
 
 If you want to update the Exchange CatchAll Transport Agent simply re-download the .zip file and follow the steps in the installation section.
+
+### Updating to Version 1.6.0
+
+If you have a version prior to 1.6.0 installed and are updating the CatchAll Agent please change the following line in you config file:
+
+```
+<database enabled="true" type="mysql" host="localhost" port="3306" database="catchall" user="catchall" password="catchall"/>
+```
+to
+```
+<database enabled="true" type="mysql" connectionstrings="SERVER=localhost;PORT=3306;UID=catchall;PWD=catchall;DATABASE=catchall;"/>
+```
+
+Additional Information on Connection Strings for MySQL can be found here: https://www.connectionstrings.com/mysql/
+
+You also need to rename the Database Table `cought` into `caught` and the column `idCought` to `idCaught`:
+
+```
+RENAME TABLE cought TO caught;
+ALTER TABLE caught CHANGE idCought idCaught int(11) NOT NULL AUTO_INCREMENT;
+```
 
 ## Uninstalling the Transport Agent
 
@@ -136,6 +161,10 @@ If you want to debug the .dll on your Exchange Server, you need to install [Visu
 8. When reached, the process should stop at the breakpoint
 
 ## Changelog
+
+* 10.03.2014 [1.6.0]:  
+	- Added MSSQL database support (Thanks to @AlexLaroche)
+	- Fixed Issue #3 (Same message ID's in Dictionary for Orig-To Header)
 
 * 24.01.2014 [1.5.2]:  
 	- Fixed database disable config (not correctly evaluated)
