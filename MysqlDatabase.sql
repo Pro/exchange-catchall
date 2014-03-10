@@ -17,8 +17,8 @@ CREATE TABLE `blocked` (
 
 delimiter $$
 
-CREATE TABLE `cought` (
-  `idCought` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `caught` (
+  `idCaught` int(11) NOT NULL AUTO_INCREMENT,
   `date` datetime NOT NULL,
   `original` varchar(255) NOT NULL,
   `replaced` varchar(255) NOT NULL,

@@ -9,8 +9,8 @@ CREATE TABLE blocked (
   UNIQUE (address)
 );
 
-CREATE TABLE cought (
-  idCought int NOT NULL IDENTITY(1,1),
+CREATE TABLE caught (
+  idCaught int NOT NULL IDENTITY(1,1),
   date datetime NOT NULL,
   original nvarchar(255) NOT NULL,
   replaced nvarchar(255) NOT NULL,
