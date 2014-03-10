@@ -102,7 +102,7 @@ namespace Exchange.CatchAll
                         domainStr += ", ";
                     domainStr += d.Name;
                 }
-                Logger.LogInformation("Following domains configured for CatchAll: " + domainStr);
+                Logger.LogInformation("Following domains configured for CatchAll: " + domainStr,50);
             }
 
             Database settings = CatchAllFactory.GetCustomConfig<Database>("customSection/database");
@@ -135,7 +135,7 @@ namespace Exchange.CatchAll
             }
             else
             {
-                Logger.LogInformation("Database connection disabled in config file.");
+                Logger.LogInformation("Database connection disabled in config file.",60);
             }
     
             this.OnEndOfData += new EndOfDataEventHandler(this.OnEndOfDataHandler);
@@ -146,7 +146,7 @@ namespace Exchange.CatchAll
         {
             string[] addrs;
             //hash code is not guaranteed to be unique. Add time to fix uniqueness
-            string itemId = e.MailItem.GetHashCode().ToString() + e.MailItem.DateTimeReceived.ToString();
+            string itemId = e.MailItem.GetHashCode().ToString() + e.MailItem.FromAddress.ToString();
             if (this.origToMapping.TryGetValue(itemId, out addrs))
             {
                 this.origToMapping.Remove(itemId);
@@ -211,10 +211,10 @@ namespace Exchange.CatchAll
 
                 if (!this.databaseConnector.isBlocked(rcptArgs.RecipientAddress.ToString().ToLower()))
                 {
-                    Logger.LogInformation("Caught: " + rcptArgs.RecipientAddress.ToString().ToLower() + " -> " + catchAllAddress.ToString());
+                    Logger.LogInformation("Caught: " + rcptArgs.RecipientAddress.ToString().ToLower() + " -> " + catchAllAddress.ToString(), 100);
                     // on Exchange 2013 SP1 it seems the RcptToHandler is called multiple times for the same MailItem
                     // hash code is not guaranteed to be unique. Add time to fix uniqueness
-                    string itemId = rcptArgs.MailItem.GetHashCode().ToString() + rcptArgs.MailItem.DateTimeReceived.ToString();
+                    string itemId = rcptArgs.MailItem.GetHashCode().ToString() + rcptArgs.MailItem.FromAddress.ToString();
                     if (!origToMapping.ContainsKey(itemId))
                     {
                         string[] addrs = new string[] { rcptArgs.RecipientAddress.ToString().ToLower(), catchAllAddress.ToString().ToLower() };
@@ -225,7 +225,7 @@ namespace Exchange.CatchAll
                 else
                 {
                     // reject email, because address is blocked
-                    Logger.LogInformation("Recipient blocked: " + rcptArgs.RecipientAddress.ToString().ToLower());
+                    Logger.LogInformation("Recipient blocked: " + rcptArgs.RecipientAddress.ToString().ToLower(),200);
 
                     if (CatchAllFactory.AppSettings.RejectIfBlocked)
                         source.RejectCommand(CatchAllAgent.rejectResponse);                       
