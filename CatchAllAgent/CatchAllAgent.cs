@@ -47,7 +47,7 @@ namespace Exchange.CatchAll
 
         private static SmtpResponse rejectResponse = new SmtpResponse("550", "5.1.1", "Recipient rejected");
 
-        private Dictionary<string, string[]> origToMapping;
+        private Dictionary<int, string[]> origToMapping;
 
         private List<DomainElement> domainList;
 
@@ -66,7 +66,7 @@ namespace Exchange.CatchAll
             // Save the address book and configuration
             this.addressBook = addressBook;
 
-            this.origToMapping = new Dictionary<string, string[]>();
+            this.origToMapping = new Dictionary<int, string[]>();
 
             DomainSection domains = CatchAllFactory.GetCustomConfig<DomainSection>("domainSection");
             if (domains == null)
@@ -145,11 +145,9 @@ namespace Exchange.CatchAll
         private void OnEndOfDataHandler(ReceiveMessageEventSource source, EndOfDataEventArgs e)
         {
             string[] addrs;
-            //hash code is not guaranteed to be unique. Add time to fix uniqueness
-            string itemId = e.MailItem.GetHashCode().ToString() + e.MailItem.FromAddress.ToString();
-            if (this.origToMapping.TryGetValue(itemId, out addrs))
+            if (this.origToMapping.TryGetValue(e.MailItem.GetHashCode(), out addrs))
             {
-                this.origToMapping.Remove(itemId);
+                this.origToMapping.Remove(e.MailItem.GetHashCode());
                 this.databaseConnector.LogCatch(addrs[0], addrs[1], e.MailItem.Message.Subject, e.MailItem.Message.MessageId);
 
                 //Add / update orig to header
@@ -213,12 +211,10 @@ namespace Exchange.CatchAll
                 {
                     Logger.LogInformation("Caught: " + rcptArgs.RecipientAddress.ToString().ToLower() + " -> " + catchAllAddress.ToString(), 100);
                     // on Exchange 2013 SP1 it seems the RcptToHandler is called multiple times for the same MailItem
-                    // hash code is not guaranteed to be unique. Add time to fix uniqueness
-                    string itemId = rcptArgs.MailItem.GetHashCode().ToString() + rcptArgs.MailItem.FromAddress.ToString();
-                    if (!origToMapping.ContainsKey(itemId))
+                    if (!origToMapping.ContainsKey(rcptArgs.MailItem.GetHashCode()))
                     {
                         string[] addrs = new string[] { rcptArgs.RecipientAddress.ToString().ToLower(), catchAllAddress.ToString().ToLower() };
-                        origToMapping.Add(itemId, addrs);
+                        origToMapping.Add(rcptArgs.MailItem.GetHashCode(), addrs);
                     }
                     rcptArgs.RecipientAddress = catchAllAddress;
                 }
