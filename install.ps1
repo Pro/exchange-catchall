@@ -58,7 +58,8 @@ write-host "Creating install directory: '$EXDIR' and copying data from '$SRCDIR'
 new-item -Type Directory -path $EXDIR -ErrorAction SilentlyContinue 
 
 copy-item "$SRCDIR\ExchangeCatchAll.dll" $EXDIR -force 
-$overwrite = read-host "Do you want to copy (and overwrite) the config file: '$SRCDIR\ExchangeCatchAll.dll'? [Y/N]"
+copy-item "$SRCDIR\ExchangeCatchAll.pdb" $EXDIR -force
+$overwrite = read-host "Do you want to copy (and overwrite) the config file: '$SRCDIR\ExchangeCatchAll.dll.config'? [Y/N]"
 if ($overwrite -eq "Y" -or $overwrite -eq "y") {
 	copy-item "$SRCDIR\ExchangeCatchAll.dll.config" $EXDIR -force
 } else {
