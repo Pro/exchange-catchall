@@ -162,8 +162,8 @@ If you want to debug the .dll on your Exchange Server, you need to install [Visu
 
 ## Changelog
 
-* 11.03.2014 [1.6.1]:  
-    - Fixed Issue #7 (Exchange 2013 Null Pointer)
+* 11.03.2014 [1.6.2]:  
+    - Fixed Issue #7 (Exchange 2013 Null Pointer if database disabled)
 
 * 10.03.2014 [1.6.0]:  
 	- Added MSSQL database support (Thanks to @AlexLaroche)
