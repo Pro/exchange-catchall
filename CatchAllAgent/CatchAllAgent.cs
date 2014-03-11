@@ -47,7 +47,7 @@ namespace Exchange.CatchAll
 
         private static SmtpResponse rejectResponse = new SmtpResponse("550", "5.1.1", "Recipient rejected");
 
-        private Dictionary<int, string[]> origToMapping;
+        private Dictionary<string, string[]> origToMapping;
 
         private List<DomainElement> domainList;
 
@@ -66,7 +66,7 @@ namespace Exchange.CatchAll
             // Save the address book and configuration
             this.addressBook = addressBook;
 
-            this.origToMapping = new Dictionary<int, string[]>();
+            this.origToMapping = new Dictionary<string, string[]>();
 
             DomainSection domains = CatchAllFactory.GetCustomConfig<DomainSection>("domainSection");
             if (domains == null)
@@ -76,7 +76,7 @@ namespace Exchange.CatchAll
             }
 
             domainList = new List<DomainElement>();
-            
+
             if (domains.Domains.Count == 0)
             {
                 Logger.LogWarning("No domains configured for CatchAll. I've nothing to do...");
@@ -102,7 +102,7 @@ namespace Exchange.CatchAll
                         domainStr += ", ";
                     domainStr += d.Name;
                 }
-                Logger.LogInformation("Following domains configured for CatchAll: " + domainStr,50);
+                Logger.LogInformation("Following domains configured for CatchAll: " + domainStr, 50);
             }
 
             Database settings = CatchAllFactory.GetCustomConfig<Database>("customSection/database");
@@ -114,7 +114,7 @@ namespace Exchange.CatchAll
 
             if (settings.Enabled)
             {
-                switch(settings.Type.ToLower())
+                switch (settings.Type.ToLower())
                 {
                     case "mysql":
                         databaseConnector = new MysqlConnector(settings.ConnectionStrings);
@@ -128,16 +128,16 @@ namespace Exchange.CatchAll
                     //case "db2":
                     //    databaseConnector = new Db2Connector(settings.ConnectionStrings);
                     //    break;
-                    default :
+                    default:
                         Logger.LogError("Configuration: Database has invalid type setting: " + settings.Type + "\nMust be 'mysql' or 'mssql'.");
                         break;
                 }
             }
             else
             {
-                Logger.LogInformation("Database connection disabled in config file.",60);
+                Logger.LogInformation("Database connection disabled in config file.", 60);
             }
-    
+
             this.OnEndOfData += new EndOfDataEventHandler(this.OnEndOfDataHandler);
             this.OnRcptCommand += new RcptCommandEventHandler(this.RcptToHandler);
         }
@@ -145,10 +145,13 @@ namespace Exchange.CatchAll
         private void OnEndOfDataHandler(ReceiveMessageEventSource source, EndOfDataEventArgs e)
         {
             string[] addrs;
-            if (this.origToMapping.TryGetValue(e.MailItem.GetHashCode(), out addrs))
+            //hash code is not guaranteed to be unique. Add time to fix uniqueness
+            string itemId = e.MailItem.GetHashCode().ToString() + e.MailItem.FromAddress.ToString();
+            if (this.origToMapping.TryGetValue(itemId, out addrs))
             {
-                this.origToMapping.Remove(e.MailItem.GetHashCode());
-                this.databaseConnector.LogCatch(addrs[0], addrs[1], e.MailItem.Message.Subject, e.MailItem.Message.MessageId);
+                this.origToMapping.Remove(itemId);
+                if (this.databaseConnector != null)
+                    this.databaseConnector.LogCatch(addrs[0], addrs[1], e.MailItem.Message.Subject, e.MailItem.Message.MessageId);
 
                 //Add / update orig to header
                 if (CatchAllFactory.AppSettings.AddOrigToHeader)
@@ -166,7 +169,7 @@ namespace Exchange.CatchAll
                     else
                     {
                         origToHeader.Value += ", " + addrs[0];
-                    } 
+                    }
                 }
             }
         }
@@ -195,7 +198,8 @@ namespace Exchange.CatchAll
                 }
                 else if (d.Regex)
                 {
-                    if (d.RegexCompiled.Match(rcptArgs.RecipientAddress.ToString().ToLower()).Success){
+                    if (d.RegexCompiled.Match(rcptArgs.RecipientAddress.ToString().ToLower()).Success)
+                    {
                         replaceWith = d.RegexCompiled.Replace(rcptArgs.RecipientAddress.ToString().ToLower(), d.Address.ToLower());
 
                         break;
@@ -207,25 +211,27 @@ namespace Exchange.CatchAll
             {
                 RoutingAddress catchAllAddress = new RoutingAddress(replaceWith);
 
-                if (!this.databaseConnector.isBlocked(rcptArgs.RecipientAddress.ToString().ToLower()))
+                if (this.databaseConnector == null || !this.databaseConnector.isBlocked(rcptArgs.RecipientAddress.ToString().ToLower()))
                 {
                     Logger.LogInformation("Caught: " + rcptArgs.RecipientAddress.ToString().ToLower() + " -> " + catchAllAddress.ToString(), 100);
                     // on Exchange 2013 SP1 it seems the RcptToHandler is called multiple times for the same MailItem
-                    if (!origToMapping.ContainsKey(rcptArgs.MailItem.GetHashCode()))
+                    // hash code is not guaranteed to be unique. Add time to fix uniqueness
+                    string itemId = rcptArgs.MailItem.GetHashCode().ToString() + rcptArgs.MailItem.FromAddress.ToString();
+                    if (!origToMapping.ContainsKey(itemId))
                     {
                         string[] addrs = new string[] { rcptArgs.RecipientAddress.ToString().ToLower(), catchAllAddress.ToString().ToLower() };
-                        origToMapping.Add(rcptArgs.MailItem.GetHashCode(), addrs);
+                        origToMapping.Add(itemId, addrs);
                     }
                     rcptArgs.RecipientAddress = catchAllAddress;
                 }
                 else
                 {
                     // reject email, because address is blocked
-                    Logger.LogInformation("Recipient blocked: " + rcptArgs.RecipientAddress.ToString().ToLower(),200);
+                    Logger.LogInformation("Recipient blocked: " + rcptArgs.RecipientAddress.ToString().ToLower(), 200);
 
                     if (CatchAllFactory.AppSettings.RejectIfBlocked)
-                        source.RejectCommand(CatchAllAgent.rejectResponse);                       
-                } 
+                        source.RejectCommand(CatchAllAgent.rejectResponse);
+                }
             }
 
             return;
