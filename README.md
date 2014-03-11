@@ -162,6 +162,9 @@ If you want to debug the .dll on your Exchange Server, you need to install [Visu
 
 ## Changelog
 
+* 11.03.2014 [1.6.1]:  
+    - Fixed Issue #7 (Exchange 2013 Null Pointer)
+
 * 10.03.2014 [1.6.0]:  
 	- Added MSSQL database support (Thanks to @AlexLaroche)
 	- Fixed Issue #3 (Same message ID's in Dictionary for Orig-To Header)

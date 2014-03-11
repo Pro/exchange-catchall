@@ -109,3 +109,4 @@ UpgradeLog*.XML
 /CatchAllAgent/bin/*/Microsoft.Exchange.Data.Common.xml
 /CatchAllAgent/bin/*/Microsoft.Exchange.Data.Transport.dll
 /CatchAllAgent/bin/*/Microsoft.Exchange.Data.Transport.xml
+/README.html
