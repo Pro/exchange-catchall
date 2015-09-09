@@ -17,7 +17,7 @@ Using MySQL (not required for basic functionality) you get additional features:
 
 ## Supported versions
 
-The .dll is compiled for .NET 3.5 (Exchange 2007 and 2010) or .NET 4 (Exchange 2013)
+The .dll is compiled for .NET 3.5 (Exchange 2007 and 2010) or .NET 4 (Exchange 2013 & 2016)
 
 * Exchange 2007 SP3 (8.3.*)
 * Exchange 2010     (14.0.*)
@@ -29,6 +29,12 @@ The .dll is compiled for .NET 3.5 (Exchange 2007 and 2010) or .NET 4 (Exchange 2
 * Exchange 2013 CU2 (15.0.712.24)
 * Exchange 2013 CU3 (15.0.775.38)
 * Exchange 2013 SP1 (15.0.847.32)
+* Exchange 2013 CU5 (15.0.913.22)
+* Exchange 2013 CU6 (15.0.995.29)
+* Exchange 2013 CU7 (15.0.1044.25)
+* Exchange 2013 CU8 (15.0.1076.9)
+* Exchange 2013 CU9 (15.0.1104.5)
+* Exchange 2016 Preview (15.1.225.16)
 
 ## Installing the Receive Agent
 
@@ -162,6 +168,9 @@ If you want to debug the .dll on your Exchange Server, you need to install [Visu
 
 ## Changelog
 
+* 09.09.2015 [1.6.3]: 
+	- New: Support for all current Exchange Versions  
+	
 * 11.03.2014 [1.6.2]:  
     - Fixed Issue #7 (Exchange 2013 Null Pointer if database disabled)
 

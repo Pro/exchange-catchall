@@ -44,8 +44,11 @@ namespace Exchange.CatchAll
         /// The address book to be used for lookups.
         /// </summary>
         private AddressBook addressBook;
-
+#if EX_2016_PREV
+        private static SmtpResponse rejectResponse = SmtpResponse.Create("550", "5.1.1", "Recipient rejected");
+#else
         private static SmtpResponse rejectResponse = new SmtpResponse("550", "5.1.1", "Recipient rejected");
+#endif
 
         private Dictionary<string, string[]> origToMapping;
 

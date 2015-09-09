@@ -1,0 +1,358 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8778ECD1-55C8-48D4-9E15-617A738E2FB7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Exchange.CatchAll</RootNamespace>
+    <AssemblyName>ExchangeCatchAll</AssemblyName>
+    <TargetFrameworkVersion Condition="'$(Configuration)|$(Platform)' == 'Debug Ex2010 SP3|AnyCPU'">v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion Condition="'$(Configuration)|$(Platform)' == 'Ex2007 SP3|AnyCPU'">v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion Condition="'$(Configuration)|$(Platform)' == 'Ex2010|AnyCPU'">v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion Condition="'$(Configuration)|$(Platform)' == 'Ex2010 SP1|AnyCPU'">v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion Condition="'$(Configuration)|$(Platform)' == 'Ex2010 SP2|AnyCPU'">v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion Condition="'$(Configuration)|$(Platform)' == 'Ex2010 SP3|AnyCPU'">v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug Ex2010 SP3|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug Exchange 2010 SP3\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\Res\Wolverine.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug Ex2013|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug Exchange 2013\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Ex2013 CU2|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug Exchange 2013 CU2\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ex2007 SP3|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Exchange 2007 SP3\</OutputPath>
+    <DefineConstants>TRACE;EX_2007_SP3</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ex2010|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Exchange 2010\</OutputPath>
+    <DefineConstants>TRACE;EX_2010</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ex2010 SP1|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Exchange 2010 SP1\</OutputPath>
+    <DefineConstants>TRACE;EX_2010_SP1</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ex2010 SP2|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Exchange 2010 SP2\</OutputPath>
+    <DefineConstants>TRACE;EX_2010_SP2</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ex2010 SP3|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Exchange 2010 SP3\</OutputPath>
+    <DefineConstants>TRACE;EX_2010_SP3</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Ex2013|AnyCPU'">
+    <OutputPath>bin\Exchange 2013\</OutputPath>
+    <DefineConstants>TRACE;EX_2013</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Ex2013 CU1|AnyCPU'">
+    <OutputPath>bin\Exchange 2013 CU1\</OutputPath>
+    <DefineConstants>TRACE;EX_2013_CU1</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Ex2013 CU2|AnyCPU'">
+    <OutputPath>bin\Exchange 2013 CU2\</OutputPath>
+    <DefineConstants>TRACE;EX_2013_CU2</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Ex2013 CU3|AnyCPU'">
+    <OutputPath>bin\Exchange 2013 CU3\</OutputPath>
+    <DefineConstants>TRACE;EX_2013_CU3</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Ex2013 SP1 CU4|AnyCPU'">
+    <OutputPath>bin\Exchange 2013 SP1 CU4\</OutputPath>
+    <DefineConstants>TRACE;EX_2013_CU4</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Ex2013 SP1 CU5|AnyCPU'">
+    <OutputPath>bin\Exchange 2013 SP1 CU5\</OutputPath>
+    <DefineConstants>TRACE;EX_2013_SP1_CU5</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Ex2013 SP1 CU6|AnyCPU'">
+    <OutputPath>bin\Exchange 2013 SP1 CU6\</OutputPath>
+    <DefineConstants>TRACE;EX_2013_SP1_CU6</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Ex2013 SP1 CU7|AnyCPU'">
+    <OutputPath>bin\Exchange 2013 SP1 CU7\</OutputPath>
+    <DefineConstants>TRACE;EX_2013_SP1_CU7</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Ex2013 SP1 CU8|AnyCPU'">
+    <OutputPath>bin\Exchange 2013 SP1 CU8\</OutputPath>
+    <DefineConstants>TRACE;EX_2013_SP1_CU8</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Ex2013 SP1 CU9|AnyCPU'">
+    <OutputPath>bin\Exchange 2013 SP1 CU9\</OutputPath>
+    <DefineConstants>TRACE;EX_2013_SP1_CU9</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Ex2016 Preview|AnyCPU'">
+    <OutputPath>bin\Exchange 2016 Preview\</OutputPath>
+    <DefineConstants>TRACE;EX_2016_PREV</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Debug Ex2010 SP3'">
+      <HintPath>..\Lib\Exchange 2010 SP3\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Debug Ex2010 SP3'">
+      <HintPath>..\Lib\Exchange 2010 SP3\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Debug Ex2013'">
+      <HintPath>..\Lib\Exchange 2013\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Debug Ex2013'">
+      <HintPath>..\Lib\Exchange 2013\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Debug Ex2013 CU2'">
+      <HintPath>..\Lib\Exchange 2013 CU2\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Debug Ex2013 CU2'">
+      <HintPath>..\Lib\Exchange 2013 CU2\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+	<Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Debug Ex2013 SP1 CU9'">
+      <HintPath>..\Lib\Exchange 2013 SP1 CU9\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Debug Ex2013 SP1 CU9'">
+      <HintPath>..\Lib\Exchange 2013 SP1 CU9\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2007 SP3'">
+      <HintPath>..\Lib\Exchange 2007 SP3\Microsoft.Exchange.Data.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2007 SP3'">
+      <HintPath>..\Lib\Exchange 2007 SP3\Microsoft.Exchange.Data.Transport.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2010'">
+      <HintPath>..\Lib\Exchange 2010\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2010'">
+      <HintPath>..\Lib\Exchange 2010\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2010 SP1'">
+      <HintPath>..\Lib\Exchange 2010 SP1\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2010 SP1'">
+      <HintPath>..\Lib\Exchange 2010 SP1\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2010 SP2'">
+      <HintPath>..\Lib\Exchange 2010 SP2\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2010 SP2'">
+      <HintPath>..\Lib\Exchange 2010 SP2\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2010 SP3'">
+      <HintPath>..\Lib\Exchange 2010 SP3\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2010 SP3'">
+      <HintPath>..\Lib\Exchange 2010 SP3\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2013'">
+      <HintPath>..\Lib\Exchange 2013\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2013'">
+      <HintPath>..\Lib\Exchange 2013\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2013 CU1'">
+      <HintPath>..\Lib\Exchange 2013 CU1\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2013 CU1'">
+      <HintPath>..\Lib\Exchange 2013 CU1\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2013 CU2'">
+      <HintPath>..\Lib\Exchange 2013 CU2\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2013 CU2'">
+      <HintPath>..\Lib\Exchange 2013 CU2\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2013 CU3'">
+      <HintPath>..\Lib\Exchange 2013 CU3\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2013 CU3'">
+      <HintPath>..\Lib\Exchange 2013 CU3\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2013 SP1 CU4'">
+      <HintPath>..\Lib\Exchange 2013 SP1 CU4\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2013 SP1 CU4'">
+      <HintPath>..\Lib\Exchange 2013 SP1 CU4\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2013 SP1 CU5'">
+      <HintPath>..\Lib\Exchange 2013 SP1 CU5\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2013 SP1 CU5'">
+      <HintPath>..\Lib\Exchange 2013 SP1 CU5\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2013 SP1 CU6'">
+      <HintPath>..\Lib\Exchange 2013 SP1 CU6\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2013 SP1 CU6'">
+      <HintPath>..\Lib\Exchange 2013 SP1 CU6\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2013 SP1 CU7'">
+      <HintPath>..\Lib\Exchange 2013 SP1 CU7\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2013 SP1 CU7'">
+      <HintPath>..\Lib\Exchange 2013 SP1 CU7\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2013 SP1 CU8'">
+      <HintPath>..\Lib\Exchange 2013 SP1 CU8\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2013 SP1 CU8'">
+      <HintPath>..\Lib\Exchange 2013 SP1 CU8\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2013 SP1 CU9'">
+      <HintPath>..\Lib\Exchange 2013 SP1 CU9\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2013 SP1 CU9'">
+      <HintPath>..\Lib\Exchange 2013 SP1 CU9\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2016 Preview'">
+      <HintPath>..\Lib\Exchange 2016 Preview\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2016 Preview'">
+      <HintPath>..\Lib\Exchange 2016 Preview\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="mysql.data, Version=6.6.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\mysql.data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CatchAllAgent.cs" />
+    <Compile Include="Configuration\General.cs" />
+    <Compile Include="Configuration\Database.cs" />
+    <Compile Include="Configuration\DomainElement.cs" />
+    <Compile Include="CatchAllFactory.cs" />
+    <Compile Include="Configuration\DomainCollection.cs" />
+    <Compile Include="Configuration\DomainSection.cs" />
+    <Compile Include="DatabaseConnector.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="MssqlConnector.cs" />
+    <Compile Include="MysqlConnector.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
