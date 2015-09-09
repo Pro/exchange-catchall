@@ -169,7 +169,8 @@ If you want to debug the .dll on your Exchange Server, you need to install [Visu
 ## Changelog
 
 * 09.09.2015 [1.6.3]: 
-	- New: Support for all current Exchange Versions  
+	- New: Support for all current Exchange Versions 
+    - Fix: Install script now unlocking files (#8)  	
 	
 * 11.03.2014 [1.6.2]:  
     - Fixed Issue #7 (Exchange 2013 Null Pointer if database disabled)
