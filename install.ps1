@@ -83,6 +83,11 @@ if ($overwrite -eq "Y" -or $overwrite -eq "y") {
 	write-host "Not copying config file" -f "yellow"
 }
 
+# Unblocks files that were downloaded from the Internet.
+unblock-file "$EXDIR\ExchangeCatchAll.dll"
+unblock-file "$EXDIR\ExchangeCatchAll.pdb"
+unblock-file "$EXDIR\ExchangeCatchAll.dll.config"
+
 copy-item "$SRCDIR\mysql.data.dll" $EXDIR -force 
 
 read-host "Now open '$EXDIR\ExchangeCatchAll.dll.config' to configure Exchange CatchAll. When done and saved press 'Return'"
