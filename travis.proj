@@ -2,18 +2,36 @@
 <Project ToolsVersion="4.0" DefaultTargets="CI" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
  
   <Target Name="CI" DependsOnTargets="Build" />
- 
-  <Target Name="Build">
-    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Release Ex2007 SP3;Platform=Any CPU" />
-    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Release Ex2010;Platform=Any CPU" />
-    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Release Ex2010 SP1;Platform=Any CPU" />
-    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Release Ex2010 SP2;Platform=Any CPU" />
-    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Release Ex2010 SP3;Platform=Any CPU" />
-    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Release Ex2013;Platform=Any CPU" />
-    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Release Ex2013 CU1;Platform=Any CPU" />
-    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Release Ex2013 CU2;Platform=Any CPU" />
-    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Release Ex2013 CU3;Platform=Any CPU" />
-    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Release Ex2013 SP1;Platform=Any CPU" />
-  </Target>
 
+  <Target Name="Build">
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2007 SP3;Platform=Any CPU" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2010;Platform=Any CPU" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2010 SP1;Platform=Any CPU" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2010 SP2;Platform=Any CPU" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2010 SP3;Platform=Any CPU" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2013;Platform=Any CPU" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2013 CU1;Platform=Any CPU" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2013 CU2;Platform=Any CPU" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2013 CU3;Platform=Any CPU" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2013 SP1 CU4;Platform=Any CPU" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2013 SP1 CU5;Platform=Any CPU" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2013 SP1 CU6;Platform=Any CPU" />
+  </Target>
+  
+  <Target Name="CleanAll">
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2007 SP3;Platform=Any CPU" Targets="Clean" StopOnFirstFailure="false" ContinueOnError="true" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2010;Platform=Any CPU" Targets="Clean" StopOnFirstFailure="false" ContinueOnError="true" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2010 SP1;Platform=Any CPU" Targets="Clean" StopOnFirstFailure="false" ContinueOnError="true" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2010 SP2;Platform=Any CPU" Targets="Clean" StopOnFirstFailure="false" ContinueOnError="true" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2010 SP3;Platform=Any CPU" Targets="Clean" StopOnFirstFailure="false" ContinueOnError="true" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2013;Platform=Any CPU" Targets="Clean" StopOnFirstFailure="false" ContinueOnError="true" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2013 CU1;Platform=Any CPU" Targets="Clean" StopOnFirstFailure="false" ContinueOnError="true" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2013 CU2;Platform=Any CPU" Targets="Clean" StopOnFirstFailure="false" ContinueOnError="true" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2013 CU3;Platform=Any CPU" Targets="Clean" StopOnFirstFailure="false" ContinueOnError="true" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2013 SP1 CU4;Platform=Any CPU" Targets="Clean" StopOnFirstFailure="false" ContinueOnError="true" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2013 SP1 CU5;Platform=Any CPU" Targets="Clean" StopOnFirstFailure="false" ContinueOnError="true" />
+    <MSBuild Projects="CatchAllAgent.sln" Properties="Configuration=Ex2013 SP1 CU6;Platform=Any CPU" Targets="Clean" StopOnFirstFailure="false" ContinueOnError="true"  />
+  </Target>
+  
+  
  </Project>
