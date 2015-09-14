@@ -6,6 +6,7 @@ CatchAll Agent for Exchange Server.
 This code is based on the work of http://catchallagent.codeplex.com/
 
 You can define a domain or regex (regular expression) and redirect all E-Mails sent to this domain to forward them to another address.
+This only works if the email is received from an external mail server. Internal mails currently can't be forwarded. See issue #13 for further info.
 
 Using MySQL (not required for basic functionality) you get additional features:
 - you can block E-Mails sent to specific addresses of such a catchall domain.
