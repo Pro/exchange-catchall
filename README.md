@@ -20,22 +20,24 @@ Using MySQL (not required for basic functionality) you get additional features:
 
 The .dll is compiled for .NET 3.5 (Exchange 2007 and 2010) or .NET 4 (Exchange 2013 & 2016)
 
-* Exchange 2007 SP3 (8.3.*)
-* Exchange 2010     (14.0.*)
-* Exchange 2010 SP1 (14.1.*)
-* Exchange 2010 SP2 (14.2.*)
-* Exchange 2010 SP3 (14.3.*)
-* Exchange 2013     (15.0.516.32)
-* Exchange 2013 CU1 (15.0.620.29)
-* Exchange 2013 CU2 (15.0.712.24)
-* Exchange 2013 CU3 (15.0.775.38)
-* Exchange 2013 SP1 (15.0.847.32)
-* Exchange 2013 CU5 (15.0.913.22)
-* Exchange 2013 CU6 (15.0.995.29)
-* Exchange 2013 CU7 (15.0.1044.25)
-* Exchange 2013 CU8 (15.0.1076.9)
-* Exchange 2013 CU9 (15.0.1104.5)
-* Exchange 2016 Preview (15.1.225.16)
+* Exchange 2007 SP3     (8.3.*)
+* Exchange 2010         (14.0.*)
+* Exchange 2010 SP1     (14.1.*)
+* Exchange 2010 SP2     (14.2.*)
+* Exchange 2010 SP3     (14.3.*)
+* Exchange 2013         (15.0.516.32)
+* Exchange 2013 CU1     (15.0.620.29)
+* Exchange 2013 CU2     (15.0.712.24)
+* Exchange 2013 CU3     (15.0.775.38)
+* Exchange 2013 SP1     (15.0.847.32)
+* Exchange 2013 CU5     (15.0.913.22)
+* Exchange 2013 CU6     (15.0.995.29)
+* Exchange 2013 CU7     (15.0.1044.25)
+* Exchange 2013 CU8     (15.0.1076.9)
+* Exchange 2013 CU9     (15.0.1104.5)
+* Exchange 2013 CU10    (15.0.1130.7)
+* Exchange 2016 Preview (15.1.225.17)
+* Exchange 2016 RTM     (15.1.225.42)
 
 ## Installing the Receive Agent
 
@@ -169,6 +171,9 @@ If you want to debug the .dll on your Exchange Server, you need to install [Visu
 
 ## Changelog
 
+* 01.11.2015 [1.6.4]:  
+    - New: Support for Exchange 2013 SP1 CU10 & Exchange 2016 RTM  
+	
 * 09.09.2015 [1.6.3]: 
 	- New: Support for all current Exchange Versions 
     - Fix: Install script now unlocking files (#8)  	
