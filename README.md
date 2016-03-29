@@ -36,8 +36,11 @@ The .dll is compiled for .NET 3.5 (Exchange 2007 and 2010) or .NET 4 (Exchange 2
 * Exchange 2013 CU8     (15.0.1076.9)
 * Exchange 2013 CU9     (15.0.1104.5)
 * Exchange 2013 CU10    (15.0.1130.7)
+* Exchange 2013 CU11    (15.0.1156.6)
+* Exchange 2013 CU12    (15.0.1178.4)
 * Exchange 2016 Preview (15.1.225.17)
 * Exchange 2016 RTM     (15.1.225.42)
+* Exchange 2016 CU1     (15.1.396.30)
 
 ## Installing the Receive Agent
 
@@ -171,6 +174,9 @@ If you want to debug the .dll on your Exchange Server, you need to install [Visu
 
 ## Changelog
 
+* 29.03.2016 [1.6.5]:  
+    - New: Support for Exchange 2013 SP1 CU11, CU12 & Exchange 2016 CU1  
+	
 * 01.11.2015 [1.6.4]:  
     - New: Support for Exchange 2013 SP1 CU10 & Exchange 2016 RTM  
 	
