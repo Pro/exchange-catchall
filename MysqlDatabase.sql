@@ -13,7 +13,7 @@ CREATE TABLE `blocked` (
   `hits` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`idblocked`),
   UNIQUE KEY `address_UNIQUE` (`address`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8$$
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4$$
 
 delimiter $$
 
@@ -25,5 +25,5 @@ CREATE TABLE `caught` (
   `subject` varchar(255) DEFAULT NULL,
   `message_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idCought`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8$$
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4$$
 
