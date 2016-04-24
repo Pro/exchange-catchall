@@ -174,6 +174,9 @@ If you want to debug the .dll on your Exchange Server, you need to install [Visu
 
 ## Changelog
 
+* 24.04.2016 [1.6.6]:  
+    - Fix: Use MySQL charset for better unicode support: utf8mb4  
+
 * 29.03.2016 [1.6.5]:  
     - New: Support for Exchange 2013 SP1 CU11, CU12 & Exchange 2016 CU1  
 	
