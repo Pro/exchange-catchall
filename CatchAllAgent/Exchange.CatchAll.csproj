@@ -17,6 +17,7 @@
     <TargetFrameworkVersion Condition="'$(Configuration)|$(Platform)' == 'Ex2010 SP2|AnyCPU'">v3.5</TargetFrameworkVersion>
     <TargetFrameworkVersion Condition="'$(Configuration)|$(Platform)' == 'Ex2010 SP3|AnyCPU'">v3.5</TargetFrameworkVersion>
     <TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion Condition="'$(Configuration)|$(Platform)' == 'Ex2016 CU2|AnyCPU'">v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -211,6 +212,15 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Ex2013 SP1 CU13|AnyCPU'">
+    <OutputPath>bin\Exchange 2013 SP1 CU13\</OutputPath>
+    <DefineConstants>TRACE;EX_2013_SP1_CU13</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Ex2016 Preview|AnyCPU'">
     <OutputPath>bin\Exchange 2016 Preview\</OutputPath>
     <DefineConstants>TRACE;EX_2016_PREV</DefineConstants>
@@ -232,6 +242,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Ex2016 CU1|AnyCPU'">
     <OutputPath>bin\Exchange 2016 CU1\</OutputPath>
     <DefineConstants>TRACE;EX_2016_CU1</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Ex2016 CU2|AnyCPU'">
+    <OutputPath>bin\Exchange 2016 CU2\</OutputPath>
+    <DefineConstants>TRACE;EX_2016_CU2</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -375,6 +394,12 @@
     <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2013 SP1 CU12'">
       <HintPath>..\Lib\Exchange 2013 SP1 CU12\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2013 SP1 CU13'">
+      <HintPath>..\Lib\Exchange 2013 SP1 CU13\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2013 SP1 CU13'">
+      <HintPath>..\Lib\Exchange 2013 SP1 CU13\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2016 Preview'">
       <HintPath>..\Lib\Exchange 2016 Preview\Microsoft.Exchange.Data.Common.dll</HintPath>
     </Reference>
@@ -392,6 +417,12 @@
     </Reference>
     <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2016 CU1'">
       <HintPath>..\Lib\Exchange 2016 CU1\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2016 CU2'">
+      <HintPath>..\Lib\Exchange 2016 CU2\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2016 CU2'">
+      <HintPath>..\Lib\Exchange 2016 CU2\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
     <Reference Include="mysql.data, Version=6.6.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
