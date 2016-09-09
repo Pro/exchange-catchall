@@ -38,9 +38,11 @@ The .dll is compiled for .NET 3.5 (Exchange 2007 and 2010) or .NET 4 (Exchange 2
 * Exchange 2013 CU10    (15.0.1130.7)
 * Exchange 2013 CU11    (15.0.1156.6)
 * Exchange 2013 CU12    (15.0.1178.4)
+* Exchange 2013 CU13    (15.0.1210.3)
 * Exchange 2016 Preview (15.1.225.17)
 * Exchange 2016 RTM     (15.1.225.42)
 * Exchange 2016 CU1     (15.1.396.30)
+* Exchange 2016 CU2     (15.1.466.34)
 
 ## Installing the Receive Agent
 
@@ -174,6 +176,9 @@ If you want to debug the .dll on your Exchange Server, you need to install [Visu
 
 ## Changelog
 
+* 01.08.2016 [1.6.7]:  
+    - New: Support for Exchange 2013 SP1 CU13 & Exchange 2016 CU2
+	
 * 24.04.2016 [1.6.6]:  
     - Fix: Use MySQL charset for better unicode support: utf8mb4  
 
