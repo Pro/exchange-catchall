@@ -76,7 +76,7 @@ if (($exchserver.admindisplayversion).major -eq 8 -and ($exchserver.admindisplay
 	$EXVER="Exchange 2016 CU2"
 }
 else {
-	throw "The exchange version is not yet supported: $exchserver.admindisplayversion"
+	throw "The exchange version is not yet supported: " + $exchserver.admindisplayversion
 }
 
 $SRCDIR="CatchAllAgent\bin\$EXVER"
