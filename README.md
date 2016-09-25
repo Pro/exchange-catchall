@@ -43,6 +43,7 @@ The .dll is compiled for .NET 3.5 (Exchange 2007 and 2010) or .NET 4 (Exchange 2
 * Exchange 2016 RTM     (15.1.225.42)
 * Exchange 2016 CU1     (15.1.396.30)
 * Exchange 2016 CU2     (15.1.466.34)
+* Exchange 2016 CU3	    (15.1.544.27)
 
 ## Installing the Receive Agent
 
