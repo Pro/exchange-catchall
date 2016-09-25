@@ -177,6 +177,9 @@ If you want to debug the .dll on your Exchange Server, you need to install [Visu
 
 ## Changelog
 
+* 25.09.2016 [1.6.8]:  
+    - New: Support for Exchange 2016 CU3
+
 * 01.08.2016 [1.6.7]:  
     - New: Support for Exchange 2013 SP1 CU13 & Exchange 2016 CU2
 	
