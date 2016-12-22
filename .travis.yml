@@ -16,4 +16,22 @@ cache: apt
 solution: CatchAllAgent.sln
 
 script:
-  - xbuild travis.proj
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2007 SP3"
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2010"
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2010 SP1"
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2010 SP2"
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2010 SP3"
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2013"
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2013 CU1"
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2013 CU2"
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2013 CU3"
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2013 SP1 CU4"
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2013 SP1 CU5"
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2013 SP1 CU6"
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2013 SP1 CU7"
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2013 SP1 CU8"
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2013 SP1 CU9"
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2013 SP1 CU10"
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2016 Preview"
+- xbuild CatchAllAgent.sln /p:Configuration="Ex2016 RTM"
+- xbuild CatchAllAgent.sln /p:Configuration="Release"
