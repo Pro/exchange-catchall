@@ -44,7 +44,7 @@ namespace Exchange.CatchAll
         /// The address book to be used for lookups.
         /// </summary>
         private AddressBook addressBook;
-#if EX_2016_PREV || EX_2016_RTM || EX_2016_CU1 || EX_2016_CU2 || EX_2016_CU3 || EX_2016_CU4
+#if EX_2016_PREV || EX_2016_RTM || EX_2016_CU1 || EX_2016_CU2 || EX_2016_CU3 || EX_2016_CU4 || EX_2016_CU19 || EX_2019_CU5
         private static SmtpResponse rejectResponse = SmtpResponse.Create("550", "5.1.1", "Recipient rejected");
 #else
         private static SmtpResponse rejectResponse = new SmtpResponse("550", "5.1.1", "Recipient rejected");

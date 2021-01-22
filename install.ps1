@@ -27,6 +27,8 @@ write-host " *** Exchange CatchAll Install Script ***" -f "blue"
 # Exchange 2016 CU2	     (15.1.466.34)
 # Exchange 2016 CU3		 (15.1.544.27)
 # Exchange 2016 CU4	     (15.1.669.32)
+# Exchange 2016 CU19     (15.1.2176.2)
+# Exchange 2019 CU5	     (15.2.595.3)
 write-host "Detecting Exchange version ... " -f "cyan"
 $hostname = hostname
 $exchserver = Get-ExchangeServer -Identity $hostname
@@ -87,6 +89,10 @@ if (($exchserver.admindisplayversion).major -eq 8 -and ($exchserver.admindisplay
 } elseif (($exchserver.admindisplayversion).major -eq 15 -and ($exchserver.admindisplayversion).minor -eq 1 -and ($exchserver.admindisplayversion).build -eq 669) {
 	# same as CU3
 	$EXVER="Exchange 2016 CU3"
+} elseif (($exchserver.admindisplayversion).major -eq 15 -and ($exchserver.admindisplayversion).minor -eq 1 -and ($exchserver.admindisplayversion).build -gt 2000) {
+	$EXVER="Exchange 2016 CU19"
+} elseif (($exchserver.admindisplayversion).major -eq 15 -and ($exchserver.admindisplayversion).minor -eq 2 -and ($exchserver.admindisplayversion).build -gt 594) {
+	$EXVER="Exchange 2019 CU5"
 } else {
 	throw "The exchange version is not yet supported: " + $exchserver.admindisplayversion
 }
