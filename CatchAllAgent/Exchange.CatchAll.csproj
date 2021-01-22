@@ -335,11 +335,16 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Ex2016 CU19|AnyCPU'">
+    <OutputPath>bin\Exchange 2016 CU19\</OutputPath>
+    <DefineConstants>TRACE;EX_2016_CU19</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Exchange.Data.Common">
-      <HintPath>..\Lib\Exchange 2019 CU5\Microsoft.Exchange.Data.Common.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Debug Ex2013'">
       <HintPath>..\Lib\Exchange 2013\Microsoft.Exchange.Data.Common.dll</HintPath>
     </Reference>
@@ -524,10 +529,18 @@
       <!-- Same as CU3 -->
       <HintPath>..\Lib\Exchange 2016 CU3\Microsoft.Exchange.Data.Transport.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Exchange.Data.Transport">
-      <HintPath>..\Lib\Exchange 2019 CU5\Microsoft.Exchange.Data.Transport.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2016 CU19'">
+      <HintPath>..\Lib\Exchange 2016 CU19\Microsoft.Exchange.Data.Common.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Common" Condition="'$(Configuration)'=='Ex2019 CU5'">
+      <HintPath>..\Lib\Exchange 2019 CU5\Microsoft.Exchange.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2016 CU19'">
+      <HintPath>..\Lib\Exchange 2016 CU19\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.Data.Transport" Condition="'$(Configuration)'=='Ex2019 CU5'">
+      <HintPath>..\Lib\Exchange 2019 CU5\Microsoft.Exchange.Data.Transport.dll</HintPath>
+    </Reference>	
     <Reference Include="mysql.data, Version=6.6.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\mysql.data.dll</HintPath>
