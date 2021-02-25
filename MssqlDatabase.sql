@@ -16,5 +16,5 @@ CREATE TABLE caught (
   replaced nvarchar(255) NOT NULL,
   subject nvarchar(255) DEFAULT NULL,
   message_id nvarchar(255) DEFAULT NULL,
-  PRIMARY KEY (idCought)
+  PRIMARY KEY (idCaught)
 );
