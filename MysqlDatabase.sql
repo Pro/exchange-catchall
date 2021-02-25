@@ -24,6 +24,6 @@ CREATE TABLE `caught` (
   `replaced` varchar(255) NOT NULL,
   `subject` varchar(255) DEFAULT NULL,
   `message_id` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`idCought`)
+  PRIMARY KEY (`idCaught`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4$$
 
